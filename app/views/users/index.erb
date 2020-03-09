@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlatironCross Clinic</title>
+    <link href="/stylesheets/user_index.css" type="text/css" rel="stylesheet">
+</head>
+    
+<body>
+
+    <header>
+        <nav>
+            <ul id="nav-bar">
+                <a class="nav-link" href="/"><li>home</li></a>
+                <a class="nav-link" href="/users/<%=@current_user.id%>/book"><li>book</li></a>
+                <a class="nav-link" href="/users/new_review"><li>leave a review</li></a>
+                <a class="nav-link" href="/users/<%=@current_user.id%>/edit"><li>edit account</li></a>
+                <%=add_log_out_button%>
+            </ul>
+        </nav>
+    </header>
+
+    <img src="/med_cross.svg" id="med_cross">
+
+    <%if @current_user.detail%>
+        <div id="big_container">
+    <%end%>
+
+        <%if @current_user.detail%>
+            <div id="show-container" class="entry">
+                <p id="p_prof">Patient's <span>profile:</span></p>
+                <div class='imgcontainer'>
+                    <img src='/patient.svg' alt='Avatar' class='avatar'>
+                </div>
+
+                <div class='non-form-container'>
+                    <p class="detail_title">Full name:</p>
+                    <p><%=@current_user.detail.full_name%></p>
+                    
+                    <p class="detail_title">Date of birth:</p>
+                    <p><%=@current_user.detail.dob%></p>
+                    
+                    <p class="detail_title">Gender:</p>
+                    <p><%=@current_user.detail.gender%></p>
+
+                    <p class="detail_title">Current address:</p>
+                    <p><%=@current_user.detail.address%></p>
+
+                    <p class="detail_title">Phone number:</p>
+                    <p><%=@current_user.detail.phone_number%></p>
+        
+                </div>
+            </div>
+        <%else%>
+            <form class="entry" action='/users/<%=@current_user.id%>/form' method='POST' id='details'>
+                <%=add_user_detail_form%>
+            </form>
+        <%end%>
+        
+        <%if @current_user.detail%>
+            <section id="upcoming" class="entry1">
+                <p id="p_prof">Upcoming <span>appointment:</span></p>
+                <div class='imgcontainer'>
+                    <img src='/appointment.svg' alt='Avatar' class='avatar'>
+                </div>
+                <%if @appointment_ids.include?(@current_user.id) %>
+                    <p class="detail_title">Doctor's name:</p>
+                    <p><%=@doctor.name%></p>
+                    
+                    <p class="detail_title">Appointment date:</p>
+                    <p><%=@appointment.apt_date%></p>
+                    
+                    <p class="detail_title">Your concerns:</p>
+                    <p><%=@appointment.symptoms%></p>
+
+                    <p class="detail_title">Your appointment's reason:</p>
+                    <p><%=@appointment.reason%></p>
+
+                    <p class="detail_title">Your appointment's status:</p>
+                    <p><%=@appointment.status%></p>
+                 <%end%>   
+            </section>
+        <%end%>
+
+        <%if @current_user.detail%>
+            <section id="rx" class="entry2">
+                <p id="p_prof">Current <span>medications:</span></p>
+                <div class='imgcontainer'>
+                    <img src='/medicine.svg' alt='Avatar' class='avatar'>
+                </div>
+                
+                <%if @medicine%>
+                    <%@medicine.each do |x|%>
+                    <p>Rx: <span><%=x.rx_name%></span>, Prescribed amount: <span><%=x.pill_count%></span> x <span><%=x.pill_size%></span></p>
+                    <p class="by_doctor">by: Dr. <%=Employee.find_by(id: x.employee_id).name%></p>
+                    <%end%>
+                <%end%>
+                    
+                    
+            </section>
+        <%end%>
+
+        <%if @current_user.detail%>    
+            </div>
+        <%end%>
+
+    <footer>
+        <ul id="footer">
+            <a class="footer-link"><li>All rights reserved © FlatironCROSS Clinic 2020 | powered by: oliverfeher</li></a> 
+            <a id="employee_login"><li>Logged in as: <span><%=@current_user.email%></span></li></a>        
+        </ul>
+    </footer>
+    </body>
+</html>

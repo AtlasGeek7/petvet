@@ -1,0 +1,22 @@
+class PetsController < ApplicationController
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end
