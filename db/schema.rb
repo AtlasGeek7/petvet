@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_07_053240) do
+ActiveRecord::Schema.define(version: 2020_03_09_172600) do
 
   create_table "appointments", force: :cascade do |t|
     t.string "symptoms"
@@ -46,6 +46,14 @@ ActiveRecord::Schema.define(version: 2020_03_07_053240) do
     t.integer "pill_size"
     t.integer "user_id"
     t.integer "employee_id"
+  end
+
+  create_table "pets", force: :cascade do |t|
+    t.string "name"
+    t.string "gender"
+    t.string "age"
+    t.string "breed"
+    t.integer "user_id"
   end
 
   create_table "reviews", force: :cascade do |t|

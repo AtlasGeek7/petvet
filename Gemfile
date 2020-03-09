@@ -9,4 +9,4 @@ gem 'shotgun'
 gem 'pry'
 gem "require_all"
 gem 'bcrypt', '~> 3.1.7'
-gem 'sinatra-contrib'
+gem "sinatra-contrib",require: false
