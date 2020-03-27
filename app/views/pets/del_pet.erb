@@ -1,0 +1,32 @@
+    
+    <% @current_user.pets.each_with_index do |p,i| %>
+    <hr>
+
+    <form action='/users/<%=@current_user.id%>/form' method='POST' id='petInf' style='width: 220px; height: 200px;'>
+      <fieldset id='fld<%=i%>' disabled  style='width: 197px; height: 185px;' >
+        <label class='pet_name' for='pet_name'><b>Name:</b></label>
+        <input class='pet_name' type='text' value=<%=p.name%> name='pet_name' required>
+        <label class='pet_age' for='pet_age'><b>Age:</b></label>
+        <input class='pet_age' type='text' value=<%=p.age%> name='pet_age' required>
+        <br>
+        <hr>
+        <label class='gender' for='gender'><b>Gender:</b></label>
+        <select name='pet_gender' id='gender' required>
+          <option value="<%= p.gender %>" selected><%= p.gender %></option>
+            <option value='Male' >Male</option>
+            <option value='Female' >Female</option>
+        </select>
+        <br>
+        <label class='address' for='address'><b>Breed:</b></label>
+        <input type='text' class='address' value=<%=p.breed%> name='breed' required>
+        <input type="hidden" name="cmd<%=i%>" value='update<%=i%>'>
+        <input type="hidden" name="petid<%=i%>" value=<%=p.id%>>
+        <button id='sndBtn<%=i%>' type='submit' style='visibility: hidden; position:relative; top: -7px; left: 105px;'>Submit</button>
+      </fieldset>
+    </form>
+    <button type="button" id='editBtn<%=i%>' name="button" onclick='frmOn(<%=i%>);' style='position:relative; top: -56px; left: 20px;' >Edit</button>
+    <button type="button" id='delBtn<%=i%>' onclick='delPet(<%=i%>);' style=" border-radius: 100%; background-color: Transparent; width:30px; height: 30px; position: relative; top: -45px; left: 123px;" >
+      <img src="/img/x.png" width="20" height="20" title="Delete" alt="Delete" style="border-radius: 100%; position: relative; top: 0px; left: -3px;">
+    </button>
+    <%end%>
+    <hr>

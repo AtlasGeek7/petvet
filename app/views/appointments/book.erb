@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FlatironCross Clinic</title>
+        <title>FlatironCross Clinic | Appointment Booking</title>
         <link href="/stylesheets/book.css" type="text/css" rel="stylesheet">
     </head>
 
@@ -15,43 +15,51 @@
             <%=add_log_out_button%>
         </ul>
     </nav>
-    
+
     <section id="log_in_form">
         <h1>Schedule an appointment!</h1>
         <form class="entry" action='/appointment' method='POST' id='appointment'>
         <p id="p_prof">Appointment <span>form:</span></p>
             <div class='imgcontainer'>
-                <img src='/patient.svg' alt='Avatar' class='avatar'>
+                <img src='/img/patient.svg' alt='Avatar' class='avatar'>
             </div>
 
             <div class='container'>
                 <label for='doctor'><b>Select doctor:</b></label>
                 <select name='doctor' form='appointment' id='doctor'>
-                    <option value="default" selected>Select doctor</option> 
+                    <option value="default" selected>Select doctor</option>
                     <% Employee.all.each do |x| %>                             <!-- REFACTOR to @employee.all.each -->
                     <option value='<%=x.id%>'><%=x.name%></option>
                     <%end%>
                 </select>
 
+                <label for='doctor'><b>Select doctor:</b></label>
+                <select name='pet_name' form='appointment' id='doctor'>
+                    <option value="default" selected>Select your pet</option>
+                    <% @current_user.pets.all.each do |x| %>                             <!-- REFACTOR to @employee.all.each -->
+                    <option value='<%=x.name%>'><%=x.name%></option>
+                    <%end%>
+                </select>
+
                 <label for='doctor'><b>Select reason:</b></label>
                 <select name='reason' form='appointment' id='doctor'>
-                    <option value="default" selected>Select reason</option> 
+                    <option value="default" selected>Select reason</option>
                     <option value='consultation'>Consultation</option>
-                    <option value="surgery">Surgery</option> 
+                    <option value="surgery">Surgery</option>
                     <option value='follow up'>Follow up</option>
                     <option value='Lab work'>Lab work</option>
                 </select>
-                
+
                 <label class='date' for='date'><b>Appointment's date:</b></label>
                 <input class='date' type='date' name='date' required>
-                
-                
+
+
                 <label for='address'><b>Enter your concerns:</b></label>
                 <textarea  placeholder='Enter a detailed description' name='symptoms' required></textarea>
 
                 <label for='full-name'><b>Enter full name to confirm!</b></label>
                 <input type='text' name='full_name' id="full-name" placeholder="Enter your full name" required>
-       
+
                 <button type='submit'>Schedule</button>
             </div>
         </form>
@@ -59,10 +67,10 @@
 
     <footer>
         <ul id="footer">
-            <a class="footer-link"><li>All rights reserved © FlatironCROSS Clinic 2020 | powered by: oliverfeher</li></a> 
-            <a id="employee_login"><li>Logged in as: <span><%=@current_user.email%></span></li></a>        
+            <a class="footer-link"><li>All rights reserved © FlatironCROSS Clinic 2020 | powered by: oliverfeher</li></a>
+            <a id="employee_login"><li>Logged in as: <span><%=@current_user.email%></span></li></a>
         </ul>
     </footer>
-    
+
 </body>
 </html>

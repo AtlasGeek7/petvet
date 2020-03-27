@@ -3,5 +3,4 @@ class Employee < ActiveRecord::Base
     has_many :appointments
     has_many :users, through: :appointments
     has_many :pets, through: :medicines
-    has_many :pets, through: :users
 end

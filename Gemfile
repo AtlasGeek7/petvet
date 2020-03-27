@@ -6,6 +6,7 @@ gem 'sqlite3'
 gem 'activerecord', '~> 5.2'
 gem 'sinatra-activerecord'
 gem 'shotgun'
+gem "tux"
 gem 'pry'
 gem "require_all"
 gem 'bcrypt', '~> 3.1.7'

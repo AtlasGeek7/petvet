@@ -1,169 +1,447 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FlatironCross Clinic</title>
-        <link href="/stylesheets/employee.css" type="text/css" rel="stylesheet">
-    </head>
-    
-    <body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PetVet | Employee Portal</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<!--
+Dragonfly Template
+http://www.templatemo.com/preview/templatemo_378_dragonfly
+-->
 
-     <header>
-        <nav>
-            <ul id="nav-bar">
-                <a class="nav-link" href="/"><li>home</li></a>
-                <a class="nav-link" href="/employee/<%=@current_employee.id%>/edit"><li>edit account</li></a>
-                <a class="nav-link" href="/employee/<%=@current_employee.id%>/appointments/edit"><li>edit appointments</li></a>
-                <a class="nav-link" href="/employee/<%=@current_employee.id%>/prescribe"><li>prescribe meds</li></a>
-                <%=add_log_out_button%>
-            </ul>
-        </nav>
-    </header>
+	<link rel="icon" href="/img/favicon.ico" type="image/gif" >
+	<link href="/templatemo_style.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.scrollTo-min.js"></script>
+	<script type="text/javascript" src="/js/jquery.localscroll-min.js"></script>
+	<script type="text/javascript" src="/js/init.js"></script>
 
-    <img src="/med_cross.svg" id="med_cross">
 
-        <div id="big_container">
-            <div id="show-container" class="entry">
-                <p id="p_prof">Doctor's <span>profile:</span></p>
-                <div class='imgcontainer'>
-                    <img src='/patient.svg' alt='Avatar' class='avatar'>
-                </div>
+    <link rel="stylesheet" href="/css/slimbox2.css" type="text/css" media="screen" />
+    <script type="text/JavaScript" src="/js/slimbox2.js"></script>
 
-                <div class='non-form-container'>
-                    <p class="detail_title">Full name:</p>
-                    <p><%=@current_employee.name%></p>
-                    
-                    <p class="detail_title">Medical department:</p>
-                    <p><%=@current_employee.speciality%></p>
-                    
+<link rel="stylesheet" href="/css/orman.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/css/nivo-slider.css" type="text/css" media="screen" />
 
-                    <p class="detail_title">E-mail address:</p>
-                    <p><%=@current_employee.email%></p>
 
-                    <p class="detail_title">Experience:</p>
-                    <p><%=@current_employee.experience%> years</p>
-        
+
+<style>
+.switch {
+	position: relative;
+	display: block;
+	vertical-align: top;
+	width: 100px;
+	height: 30px;
+	padding: 3px;
+	margin: 0 10px 10px 0;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+	border-radius: 18px;
+	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	cursor: pointer;
+	box-sizing:content-box;
+}
+.switch-input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	box-sizing:content-box;
+}
+.switch-label {
+	position: relative;
+	display: block;
+	height: inherit;
+	font-size: 10px;
+	text-transform: uppercase;
+	background: #6B8E23;
+	border-radius: inherit;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+	box-sizing:content-box;
+}
+.switch-label:before, .switch-label:after {
+	position: absolute;
+	top: 50%;
+	margin-top: -.5em;
+	line-height: 1;
+	-webkit-transition: inherit;
+	-moz-transition: inherit;
+	-o-transition: inherit;
+	transition: inherit;
+	box-sizing:content-box;
+}
+.switch-label:before {
+	content: attr(data-off);
+	right: 11px;
+	color: #fff;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+.switch-label:after {
+	content: attr(data-on);
+	left: 11px;
+	color: #FFFFFF;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+	opacity: 0;
+}
+.switch-input:checked ~ .switch-label {
+	background: #E1B42B;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+.switch-input:checked ~ .switch-label:before {
+	opacity: 0;
+}
+.switch-input:checked ~ .switch-label:after {
+	opacity: 1;
+}
+.switch-handle {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 28px;
+	height: 28px;
+	background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+	background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+	border-radius: 100%;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+.switch-handle:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -6px 0 0 -6px;
+	width: 12px;
+	height: 12px;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+	border-radius: 6px;
+	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+}
+.switch-input:checked ~ .switch-handle {
+	left: 74px;
+	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Transition
+========================== */
+.switch-label, .switch-handle {
+	transition: All 0.3s ease;
+	-webkit-transition: All 0.3s ease;
+	-moz-transition: All 0.3s ease;
+	-o-transition: All 0.3s ease;
+}
+</style>
+
+</head>
+<body>
+<div id="templatemo_wrapper">
+<div id="templatemo_header">
+	EMPLOYEE PORTAL
+    <div id="site_title"><a href="#"></a></div>
+    <ul class="nav_menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#meds">Meds</a></li>
+        <li><a href="#appt">Appt</a></li>
+        <li><a href="#chat">Chat</a>
+					<button id="chatOn" style="cursor: none; float: left; border-radius: 100%; background-color: transparent; width:30px; height: 30px; position: relative; top: -40px; left: 30px;  display: none;" >
+					<img src="/img/yellow-btn.png" width="26" height="26" title="Chat On" alt="Chat On" style="border-radius: 100%; position: relative; top: -2px; left: -6px;">
+					</button>
+				</li>
+    </ul>
+    <div class="social_button">
+    	<a href="#"><img src="/images/facebook.png" alt="Facebook" /></a>
+		<a href="#"><img src="/images/flickr.png" alt="Flickr" /></a>
+		<a href="#"><img src="/images/twitter.png" alt="Twitter" /></a>
+        <div class="clear"></div>
+    </div>
+    <p> Copyright © 2020 <br /> | PetVet | <br /> Designed/developed by: <br /> AtlasGeek7</p>
+		<% if @current_employee %>
+		<hr width="65%">
+		<a class='nav-link' href='/employee_logout' id='log-out-button'><button style="float: left; border-radius: 100%; background-color: transparent; width:20px; height: 20px; position: relative; top: -28px; left: 100px;" >
+				<img src="/img/logout.png" width="20" height="20" title="Log out" alt="Add New Pet" style="border-radius: 100%; position: relative; top: -3px; left: -8px;">
+			</button>
+			</a>
+			<% end %>
+</div>
+
+
+
+
+<div id="templatemo_main">
+	<div id="content">
+       	<div id="home" class="home_slider">
+
+
+
+             <div class="theme-orman">
+                <div id="slider" class="nivoSlider">
+                    <img src="/images/slider/01.jpg" alt="Dragonfly 1" rel="/images/slider/01_thumb.jpg" />
+                    <img src="/images/slider/02.jpg" alt="Dragonfly 2" rel="/images/slider/02_thumb.jpg" />
+                    <img src="/images/slider/03.jpg" alt="Dragonfly 3" rel="/images/slider/03_thumb.jpg" />
+                    <img src="/images/slider/04.jpg" alt="Dragonfly 4" rel="/images/slider/04_thumb.jpg" />
+                    <img src="/images/slider/05.jpg" alt="Dragonfly 5" rel="/images/slider/05_thumb.jpg" />
                 </div>
             </div>
+            <script type="text/javascript" src="/js/jquery-1.6.1.min.js"></script>
+            <script type="text/javascript" src="/js/jquery.nivo.slider.pack.js"></script>
+            <script type="text/javascript">
+            $(window).load(function() {
+                $('#slider').nivoSlider({
+                    controlNavThumbs:true,
+					controlNavThumbsFromRel:true,
+					directionNav:false, // Next and Prev
+					keyboardNav:true, // Use left and right arrows
+					pauseOnHover:true // Stop animation while hovering
+                });
+            });
+            </script>
+       	</div>
+				<% if !@current_employee %>
+<div class="show-container" style="text-align: center; width: 800px; height: 100%; background: rgba(76, 175, 80, 0.1); position:relative; top: -207px; left: -380px; z-index: 1000; ">
 
-            <section id="upcoming" class="entry1">
-                <p id="p_prof">View <span>appointments:</span></p>
-                <div class='imgcontainer'>
-                    <img src='/appointment.svg' alt='Avatar' class='avatar'>
-                </div>
-                    <form action="/employee/<%=@current_employee.id%>/appointment" method="POST"> 
-                        <select name='doctor' form='appointment' id='doctor'>
-                            <option value="default" selected>Appointment requests:</option> 
-                            <% @current_employee.appointments.each do |x| %>                             <!-- REFACTOR to @employee.all.each -->
-                            <option value="<%=x.id%>"><%=x.user.detail.full_name%>, DOB: <%=x.user.detail.dob%>, G: <%=x.user.detail.gender%>, Cell: <%=x.user.detail.phone_number%></option>
-                            <%end%>
-                        </select>
-                    </form> 
-                    <button type='submit' onclick="submitForm()">Select</button>     
-            </section>
 
+	<div align="center" id="signInDiv" style=" position: relative; top: 20px; left: 0px; z-index: 10;">
+		 <h2>&nbsp;</h2>
+		 <form id="sign_in"  action="/employee/index" method="post" style="color: black; position:relative; top: 100px; left: -20px; height: 320px; width: 400px;">
+				<div class="imgcontainer" style="position: relative; top: -41px; left: -262px;">
+					 <img src="/img/doc.jpg" alt="Avatar" class="avatar">
+				</div>
+
+<div style="position: relative; top: -55px; left: -110px;">
+
+					 <label class="e-mail" for="email"><b>E-mail: &nbsp; &nbsp; &nbsp;</b></label>
+					 <input class="e-mail" type="email" placeholder="Enter E-mail.." name="email" required>
+					 <br />
+					 <br />
+					 <label class="password" for="password"><b>Password: &nbsp;</b></label>
+					 <input class="password" type="password" placeholder="Enter Password.." name="password" required>
+					 <br />
+					 <input type="hidden" name="cmd" value='login'>
+					 <button type="submit" >Sign in</button>
+					 <br />
+				<a href="javascript:void(0);" onclick="showSignUp(); return false;" id="showSignUp">Sign up?</a>
+				</div>
+				<p style="color: red;">  <%= locals[:error] %>  </p>
+		 </form>
+
+	</div>
+	<div align="center" id="signUpDiv" style="position:relative; top: -356px;  left: 0px; z-index: -1;">
+		 <div  style="position:relative; top: 0px;  left: 0px;">
+				<h2>&nbsp;</h2>
+				<form action="/employee/index" method="post" style="color: black; position:relative; top: 100px; left: -20px; height: 320px; width: 400px;">
+					<div class="imgcontainer" style="position:relative; top: -40px; left: -152px;">
+						 <img src="/img/doc.jpg" alt="Avatar" class="avatar">
+					</div>
+					 <div style="position:relative; top: -30px;  left: 0px;">
+							<label class="e-mail" for="email"><b>E-mail: &nbsp; &nbsp; &nbsp;</b></label>
+							<input class="e-mail" type="email" placeholder="Enter your E-mail here..." name="email" required>
+							<br />
+							<br />
+							<label class="password" for="password"><b>Password: &nbsp; </b></label>
+							<input class="password" type="password" placeholder="Enter a password here..." name="password" required>
+							<br />
+							<br />
+							<label class='full_name' for='full_name'><b>Full name: &nbsp; </b></label>
+							<input class="full_name" type='text' placeholder='Your first & last name...' name='name' required>
+							<br />
+							<br />
+							<label class='speciality' for='speciality'><b>Specialty: &nbsp; </b></label>
+							<input class="speciality" type='text' placeholder='Your specialty...' name='specialty' required>
+							<br />
+							<br />
+							<label class='experience' for='experience'><b>Experience:  </b></label>
+							<input class='experience' type='text' placeholder='Number of years of experience...' name='experience' required>
+							<br />
+							<input type="hidden" name="cmd" value='signup'>
+							<button type="submit" >Sign up</button>
+							<a href="#"  onclick="showSignIn(); return false;" id="showSignin" style="float: right; ">Sign in? &nbsp; </a>
+					 </div>
+
+				</form>
+
+		 </div>
+	</div>
+</div>
+</div>
+
+
+
+
+
+
+</div>
+
+<script>
+$(document).ready(function(){
+//	$("#templatemo_header").css("color", "black");
+});
+</script>
+<% end %>
+
+
+
+<% if @current_employee %>
+
+        <div class="section section_with_padding" id="about">
+
+            <h1>About</h1>
+            <div class="img_border img_fl">
+            	<a href="#"><img src="/images/templatemo_image_01.jpg" alt="image 1" /></a>
+          	</div>
+            <p><em>Dragonfly is free website template that can be used for any purpose. Integer varius, ut fermentum sem adipiscing id.</em></p>
+            <p>Sed vitae aliquam arcu. Donec urna massa, cursus et mattis at, mattis quis lectus. Cras in erat purus. Aliquam odio nibh, suscipit quis venenatis vitae, fringilla at quam. Proin turpis nibh, vestibulum non dignissim a, blandit at nulla mattis sapien. </p>
+            <div class="clear h40"></div>
+            <div class="img_border img_fr">
+                <img src="/images/templatemo_image_02.jpg" alt="image 2" />
+            </div>
+            <p><em>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer varius, ut fermentum sem adipiscing id.</em></p>
+            <p>Sed vitae aliquam arcu. Donec urna massa, cursus et mattis at, mattis quis lectus. Cras in erat purus. Aliquam odio nibh, suscipit quis venenatis vitae, fringilla at quam. Proin turpis nibh, vestibulum non dignissim a, blandit at nulla mattis sapien. Validate <a href="http://validator.w3.org/check?uri=referer" rel="nofollow">XHTML</a> &amp; <a href="http://jigsaw.w3.org/css-validator/check/referer" rel="nofollow">CSS</a>.</p>
         </div>
 
-        <footer>
-        <ul id="footer">
-            <a class="footer-link"><li>All rights reserved © FlatironCROSS Clinic 2020 | powered by: oliverfeher</li></a> 
-            <a id="employee_login"><li>Logged in as: <span><%=@current_employee.email%></span></li></a>        
-        </ul>
-
-        
-
-    </footer>
-    </body>
-
-    <script>
-
-        let appointment = document.createElement('DIV');
-        appointment.setAttribute("id", "js_box");
-        appointment.setAttribute("class", "entry");
-
-        const title = document.createElement("p");
-        title.setAttribute("id", "p_prof");
-        title.innerHTML = "Appointment details:"
-
-        x = document.getElementById('doctor').value
-
-        let para = document.createElement('p');
-        let para_name = document.createElement('p');
-        para_name.setAttribute("class", "detail_title");
-        para_name.innerHTML = "Appointment's date:";
-        
-
-        let sym = document.createElement('p');
-        let sym_name = document.createElement('p');
-        sym_name.setAttribute("class", "detail_title");
-        sym_name.innerHTML = "Patient's concerns:";
 
 
-        let reason = document.createElement('p');
-        let reason_name = document.createElement('p');
-        reason_name.setAttribute("class", "detail_title");
-        reason_name.innerHTML = "Appointment's reason:";
 
-        let name = document.createElement('p');
-        let name_name = document.createElement('p');
-        name_name.setAttribute("class", "detail_title");
-        name_name.innerHTML = "Patient's name:";
 
-        let stat = document.createElement('p');
-        let stat_name = document.createElement('p');
-        stat_name.setAttribute("class", "detail_title");
-        stat_name.innerHTML = "Appointment's status:";
+        <div class="section section_with_padding" id="meds">
 
-        let table = document.getElementById('big_container');
-       
-        
-      
-        function submitForm() {
-            var http = new XMLHttpRequest();
-            http.open("GET", `/appointment/select/${document.getElementById('doctor').value}`, true);
-            http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            http.onreadystatechange = function() {
-                if(http.readyState === XMLHttpRequest.DONE) {
-                    var status = http.status;
-                    if (status === 0 || (200 >= status && status < 400)) {
-                        let details = http.responseText;
-                        let details2 = JSON.parse(details)
-                        console.log(details2)
-                        const createBox = () => {
-                            table.appendChild(appointment)
-                        }
-                        const createDetails = () => {
-                            let container = document.getElementById('js_box');
-                            container.appendChild(title);
+            <div class="half right">
+<div class="show-container" style="text-align: center; width: 200px; height: 480px; background-color: white; position: relative; left: -60px; top: -7px;">
+							<form class="entry" action="/employee/<%=@current_employee.id%>/prescribe" method='POST' style=" width: 200px; height: 380px; position: relative; top: 50px;" >
+			            <p id='p_prof'>Prescribe <span>MEDS:</span></p>
+			            <div class='imgcontainer'>
+			                <img src='/img/medicine.svg' alt='Avatar' class='avatar'>
+			            </div>
 
-                            container.appendChild(name_name);
-                            container.appendChild(name);
-                            name.innerHTML = details2.full_name;
 
-                            container.appendChild(para_name);
-                            container.appendChild(para);
-                            para.innerHTML = details2.apt_date;
+			                <label class='patient' for='patient'><b>Prescribing for:</b></label>
+											<br>
+											<select name='patient' form='prescribe' id='patient'>
+			                    <option value="default" selected>Prescribing for:</option>
+													<% @patients = Pet.all %>
+			                    <% @patients.each do |x| %>
+			                    <option value="<%=x.id%>"><%=x.name%>, <%=x.age%></option>
+			                    <%end%>
+			                </select>
+											<br>
+			                <label class='rx' for='rx'><b>Rx name:</b></label>
+											<br>
+											<input type='text' class='rx' placeholder='Enter rx..' name='rx' required>
+											<br>
+			                <label class='pill_count' for='pill_count'><b>Pill count:</b></label>
+											<br>
+											<input class='pill_count' type='number' placeholder='Enter pill count..' name='pill_count' required>
+											<br>
+			                <label class='pill_size' for='pill_size'><b>Pill size (in mg):</b></label>
+											<br>
+											<input class='pill_size' type='number' placeholder='Pill size in mg..' name='pill_size' required>
+											<br>
+			                <button onclick="prescribe()" type='submit'>Prescribe</button>
 
-                            container.appendChild(sym_name);
-                            container.appendChild(sym);
-                            sym.innerHTML = details2.symptoms;
+			        </form>
+						</div>
 
-                            container.appendChild(stat_name);
-                            container.appendChild(stat);
-                            stat.innerHTML = details2.status;
+          </div>
+            <div class="half left">
+                <div class="img_border img_nom">
+	                <img src="/images/templatemo_image_03.jpg" alt="image 3" />
+                </div>
+            	<p><em>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. You may download free <a href="#">templates</a> for your websites.</em></p>
+            <p>Donec vitae tortor non ipsum tristique condimentum ac ac nulla. Etiam sagittis iaculis dolor ut euismod. Nam faucibus, risus at consequat malesuada, urna turpis sagittis libero, sodales hendrerit dui arcu et nisi. Praesent pulvinar, dolor id lacinia pulvinar, mi ligula tempor libero, et semper sem dolor et elit.</p>
+            </div>
+        </div>
 
-                            container.appendChild(reason_name);
-                            container.appendChild(reason);
-                            reason.innerHTML = details2.reason;
-                        }
-                        createBox();
-                        createDetails();
-                        }
-                }
-            }
-            http.send();
-        }
-    </script>
 
+
+
+
+
+
+
+        <div class="section" id="appt">
+					<div  class="show-container  style-1" style="width: 400px; height: 440px; max-height: 440px; overflow-y: auto; overflow-x: hidden;">
+	            <p id='p_prof'>pending <span>appointments:</span></p>
+	            <div class='imgcontainer'>
+	                <img src='/img/appointment.svg' alt='Avatar' class='avatar'>
+	            </div>
+
+	            <div class='container' style="width: 200PX; height: 300px;">
+							<%	@appointments = Appointment.all.select { |a| a.employee_id == @current_employee.id } %>
+							<%	@pending_apts = @appointments.select { |a| a.status == "pending"} %>
+								<% if @pending_apts %>
+	                <% @pending_apts.each do |a| %>
+	                    <div style="background-color: white; color: black;">
+	                        <p >Request from: <%= a.user.user_details.full_name %></p>
+	                        <p >DOB: <%= a.user.user_details.dob %> </p>
+													<p >	 Gender: <%= a.user.user_details.gender %> </p>
+														<p > Cell: <%= a.user.user_details.phone_number %></p><br>
+	                        <div class="cancel_confirm" style="width: 103px; float: right;">
+
+	                            <form method="post" action="/appointment/update">
+	                                <input type="hidden" id="hidden" name="<%= a.id %>">
+	                                <input type="submit" class="button" value="Confirm">
+	                            </form>
+															<br />
+	                            <form method="post" action="/appointment/delete">
+	                                <input type="hidden" id="hidden" name="<%= a.id %>">
+	                                <input type="submit" id="m-red" class="button" value=" Cancel">
+	                            </form>
+	                        </div>
+	                    </div>
+	                <% end %>
+
+									<% else %>
+									<h4 style="color: #ccc;"> Nothing here yet. </h4>
+					<% end %>
+					</div>
+
+					</div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="section section_with_padding" id="chat">
+            <div class="half left">
+							<div align="right">
+								<div align="left" style="position: relative; top: -20px;">
+									<label class="switch">
+									<%	bool = @current_employee.status == 1 ? nil : 'checked' %>
+										<input class="switch-input" type="checkbox" id="statusToggler" onclick="updateStatus();" <%= bool %>/>
+										<span class="switch-label" data-on="Available" data-off="Busy"></span>
+										<span class="switch-handle"></span>
+									</label>
+								</div>
+								<div class="show-container style-1" style="text-align: center; width: 180%; height: 480px; background-color: white; position: relative; top: -20px;">
+													<form action='/employee/<%= @current_employee.id %>/chat' method='post' id='chat' onsubmit="return fetchdata();">
+															<input type="text" id="msg" name="txtbox" maxlength="60" size="60" placeholder="Type your message here..." style="position: relative; left: -40px; border: 5px solid #ccc;">
+
+													</form>
+<button id="ajaxBtn" onclick="postMsg(); " style="position: relative; top: -303px; left: 230px; width: 50px; height: 30px; text-align: justify;"> Send </button>
+													<div id="msgbox" class="style-1" style="opacity: 1;">
+
+														<!--    <h4> Nothing here yet! </h4> -->
+	                          <p><span id="date"> Welcome to Live Chat! </p>
+
+
+
+													</div>
+							</div>
+						</div>
+
+          </div>
+
+					<% end %>
+
+
+        </div>
+    </div>
+	<script type="text/javascript" src="/js/employee/script.js"></script>
+<!-- templatemo 378 dragonfly -->
+</body>
 </html>

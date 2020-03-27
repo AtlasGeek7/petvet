@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlatironCross Clinic</title>
+    <title>FlatironCross Clinic | User index</title>
     <link href="/stylesheets/user_index.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/script.js"></script>
 </head>
-    
+
 <body>
 
     <header>
@@ -21,95 +23,181 @@
         </nav>
     </header>
 
-    <img src="/med_cross.svg" id="med_cross">
+    <img src="/img/med_cross.svg" id="med_cross">
 
-    <%if @current_user.detail%>
+    <%if @current_user.user_details%>
         <div id="big_container">
     <%end%>
 
-        <%if @current_user.detail%>
+        <%if @current_user.user_details%>
             <div id="show-container" class="entry">
-                <p id="p_prof">Patient's <span>profile:</span></p>
+                <p id="p_prof">Client's <span>profile:</span></p>
                 <div class='imgcontainer'>
-                    <img src='/patient.svg' alt='Avatar' class='avatar'>
+                    <img src='/img/patient.svg' alt='Avatar' class='avatar'>
                 </div>
 
                 <div class='non-form-container'>
                     <p class="detail_title">Full name:</p>
-                    <p><%=@current_user.detail.full_name%></p>
-                    
+                    <p><%=@current_user.user_details.full_name%></p>
+
                     <p class="detail_title">Date of birth:</p>
-                    <p><%=@current_user.detail.dob%></p>
-                    
+                    <p><%=@current_user.user_details.dob%></p>
+
                     <p class="detail_title">Gender:</p>
-                    <p><%=@current_user.detail.gender%></p>
+                    <p><%=@current_user.user_details.gender%></p>
 
                     <p class="detail_title">Current address:</p>
-                    <p><%=@current_user.detail.address%></p>
+                    <p><%=@current_user.user_details.address%></p>
 
                     <p class="detail_title">Phone number:</p>
-                    <p><%=@current_user.detail.phone_number%></p>
-        
+                    <p><%=@current_user.user_details.phone_number%></p>
+
                 </div>
             </div>
-        <%else%>
-            <form class="entry" action='/users/<%=@current_user.id%>/form' method='POST' id='details'>
-                <%=add_user_detail_form%>
+
+            <div id="show-container" class="entry">
+                <p id="p_prof">Pets <span>profile:</span></p>
+                <div class='imgcontainer'>
+                    <img src='/img/patient.svg' alt='Avatar' class='avatar'>
+                </div>
+
+
+
+
+<div style="overflow-y: auto; max-height: 400px;">
+                <% @current_user.pets.each do |p| %>
+                <hr>
+                <form action='/users/<%=@current_user.id%>/form' method='POST' style='width: 220px;'>
+                  <fieldset id='fld' disabled>
+
+                    <label class='pet_name' for='pet_name'><b>Name:</b></label>
+                    <input class='pet_name' type='text' placeholder=<%=p.name%> name='pet_name' required>
+
+                    <label class='pet_age' for='pet_age'><b>Age:</b></label>
+                    <input class='pet_age' type='text' placeholder=<%=p.age%> name='pet_age' required>
+                    <% val_one = p.gender == 'Male' ? 'selected' : '' %>
+                    <% val_two = p.gender == 'Female' ? 'selected' : '' %>
+                    <label class='gender' for='gender'><b>Gender:</b></label>
+                    <select name='pet_gender' form='details' id='gender'>
+                        <option value='Male' <%= val_one %> >Male</option>
+                        <option value='Female' <%= val_two %> >Female</option>
+                    </select>
+
+                    <label class='address' for='address'><b>Breed:</b></label>
+                    <input type='text' class='address' placeholder=<%=p.breed%> name='breed' required>
+                    <input type="hidden" id="hidden" name="cmd" value='update'>
+                    <input type="hidden" id="hidden" name="petid" value=<%=p.id%>>
+                    <button id='sndBtn' type='submit' style='visibility: hidden;'>Submit</button>
+                    </fieldset>
+                      </form>
+
+                      <button type="button" name="button" onclick='frmOn();' style='position:relative; top: 0px;'>Edit</button>
+                <%end%>
+                <hr>
+</div>
+            </div>
+
+        <% else %>
+
+            <form class="entry" action='/users/<%=@current_user.id%>/form' method='POST' id='details' onload="toggleForms()">
+              <div id='frm' style='height: 671px;'>
+                <%= add_user_detail_form %>
+                <%= pet_info_form %>
+                </div>
             </form>
+
         <%end%>
-        
-        <%if @current_user.detail%>
+
+        <%if @current_user.user_details%>
+
             <section id="upcoming" class="entry1">
                 <p id="p_prof">Upcoming <span>appointment:</span></p>
                 <div class='imgcontainer'>
-                    <img src='/appointment.svg' alt='Avatar' class='avatar'>
+                    <img src='/img/appointment.svg' alt='Avatar' class='avatar'>
                 </div>
-                <%if @appointment_ids.include?(@current_user.id) %>
+<div style="overflow-y: auto; max-height: 400px;">
+                <% @current_user.appointments.each do |a| %>
+                <hr>
                     <p class="detail_title">Doctor's name:</p>
                     <p><%=@doctor.name%></p>
-                    
+
                     <p class="detail_title">Appointment date:</p>
-                    <p><%=@appointment.apt_date%></p>
-                    
+                    <p><%=a.apt_date%></p>
+
                     <p class="detail_title">Your concerns:</p>
-                    <p><%=@appointment.symptoms%></p>
+                    <p><%=a.symptoms%></p>
 
                     <p class="detail_title">Your appointment's reason:</p>
-                    <p><%=@appointment.reason%></p>
+                    <p><%=a.reason%></p>
 
                     <p class="detail_title">Your appointment's status:</p>
-                    <p><%=@appointment.status%></p>
-                 <%end%>   
+                    <p><%=a.status%></p>
+
+                 <%end%>
+  </div>
             </section>
+
         <%end%>
 
-        <%if @current_user.detail%>
+
+        <%if @current_user.user_details%>
             <section id="rx" class="entry2">
                 <p id="p_prof">Current <span>medications:</span></p>
                 <div class='imgcontainer'>
-                    <img src='/medicine.svg' alt='Avatar' class='avatar'>
+                    <img src='/img/medicine.svg' alt='Avatar' class='avatar'>
                 </div>
-                
+
                 <%if @medicine%>
                     <%@medicine.each do |x|%>
                     <p>Rx: <span><%=x.rx_name%></span>, Prescribed amount: <span><%=x.pill_count%></span> x <span><%=x.pill_size%></span></p>
                     <p class="by_doctor">by: Dr. <%=Employee.find_by(id: x.employee_id).name%></p>
                     <%end%>
                 <%end%>
-                    
-                    
+
+
             </section>
         <%end%>
 
-        <%if @current_user.detail%>    
+        <%if @current_user.user_details%>
             </div>
         <%end%>
 
     <footer>
         <ul id="footer">
-            <a class="footer-link"><li>All rights reserved © FlatironCROSS Clinic 2020 | powered by: oliverfeher</li></a> 
-            <a id="employee_login"><li>Logged in as: <span><%=@current_user.email%></span></li></a>        
+            <a class="footer-link"><li>All rights reserved © FlatironCROSS Clinic 2020 | powered by: oliverfeher</li></a>
+            <a id="employee_login"><li>Logged in as: <span><%=@current_user.email%></span></li></a>
         </ul>
     </footer>
+
+    <script>
+
+      function frmOn() {
+        fld = document.getElementById("fld")
+        fld.disabled = false
+        sndBtn = document.getElementById("sndBtn")
+        sndBtn.style.visibility = 'visible'
+      }
+
+      function toggleForms() {
+      usrfrm = document.getElementById("usrfrm")
+      petfrm  = document.getElementById("petfrm")
+      nxtBtn = document.getElementById("nxtBtn")
+      nxtBtn.addEventListener("click", function(){
+        usrfrm.style.visibility = 'hidden'
+        petfrm.style.visibility = 'visible'
+        //petfrm.style.zIndex = "2"
+      //  usrfrm.style.zIndex = "1"
+      });
+      prvBtn.addEventListener("click", function(){
+        usrfrm.style.visibility = 'visible'
+        petfrm.style.visibility = 'hidden'
+      //  petfrm.style.zIndex = "1"
+      //  usrfrm.style.zIndex = "2"
+      });
+
+}
+
+    </script>
+
     </body>
 </html>

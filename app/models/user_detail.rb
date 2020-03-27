@@ -1,3 +1,3 @@
-class UserDetail < ActiveRecord::Base
+class UserDetails < ActiveRecord::Base
     belongs_to :user
 end

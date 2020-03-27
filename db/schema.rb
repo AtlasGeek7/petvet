@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_09_172600) do
+ActiveRecord::Schema.define(version: 2020_03_24_074134) do
 
   create_table "appointments", force: :cascade do |t|
     t.string "symptoms"
@@ -20,16 +20,7 @@ ActiveRecord::Schema.define(version: 2020_03_09_172600) do
     t.integer "user_id"
     t.integer "employee_id"
     t.string "status"
-  end
-
-  create_table "details", force: :cascade do |t|
-    t.string "full_name"
-    t.string "gender"
-    t.string "address"
-    t.string "dob"
-    t.string "phone_number"
-    t.integer "user_id"
-    t.integer "medicine_id"
+    t.string "pet_name"
   end
 
   create_table "employees", force: :cascade do |t|
@@ -38,13 +29,16 @@ ActiveRecord::Schema.define(version: 2020_03_09_172600) do
     t.string "speciality"
     t.string "email"
     t.string "password_digest"
+    t.string "messages"
+    t.integer "status"
+    t.integer "cid"
   end
 
   create_table "medicines", force: :cascade do |t|
     t.string "rx_name"
     t.integer "pill_count"
     t.integer "pill_size"
-    t.integer "user_id"
+    t.integer "pet_id"
     t.integer "employee_id"
   end
 
@@ -54,19 +48,33 @@ ActiveRecord::Schema.define(version: 2020_03_09_172600) do
     t.string "age"
     t.string "breed"
     t.integer "user_id"
+    t.integer "medicine_id"
+    t.string "img"
   end
 
   create_table "reviews", force: :cascade do |t|
     t.string "title"
     t.string "content"
-    t.date "date"
     t.integer "user_id"
     t.string "rating"
+    t.string "date"
+  end
+
+  create_table "user_details", force: :cascade do |t|
+    t.string "full_name"
+    t.string "gender"
+    t.string "address"
+    t.string "dob"
+    t.string "phone_number"
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
+    t.string "messages"
+    t.string "img"
+    t.integer "cid"
   end
 
 end
