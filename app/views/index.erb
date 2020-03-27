@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>PetVet | Home</title>
@@ -196,7 +196,12 @@ Cufon.replace('h2', { fontFamily: 'GeosansLight' });
               <h2>Testimonials</h2>
               <div class="testimonial">
                     <div class="testimonial_quotes">
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+											<% Review.all.each do |r| %>
+											<div class="date"><%= r.date %></div>
+					                    <p id="p_prof">From: <%= User.find(r.user_id).user_details.full_name.split(' ').first.capitalize %> <br> Rating: <span><img id="star_<%= r.rating %>" src="/img/transp.png" width="1" height="1" style="float: right;"></span></p>
+					                    <p><%= r.title %></p>
+					                    <p><%= r.content %></p>
+					            <%end%>
                     	</div>
               			</div>
         	</div>
