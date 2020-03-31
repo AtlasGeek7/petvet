@@ -1,12 +1,8 @@
 class ReviewController < ApplicationController
 
-    get "/users/:id/home#testimonial" do
-        @current_user = User.find_by(email: session[:email])
-        @review = Review.all.find_by(user_id: @current_user.id)
-        erb :"/reviews/new"
-    end
-
     post "/review/new" do
+
+      if session[:email]
         @current_user = User.find_by(email: session[:email])
         @review = Review.new
         @review.title = params[:title]
@@ -15,11 +11,16 @@ class ReviewController < ApplicationController
         @review.date = Time.now.strftime("%b-%m-%d %H:%M:%S")
         @review.user_id = @current_user.id
         @review.save
-
         redirect "/users/#{@current_user.id}/home#testimonial"
+      else
+        redirect "/users/home"
+      end
+
     end
 
     get "/reviews" do
+
+      if session[:email]
         @current_employee = Employee.find_by(email: session[:email])
         @current_user = User.find_by(email: session[:email])
         @reviews = Review.all
@@ -27,9 +28,15 @@ class ReviewController < ApplicationController
         @ratings_sum = @ratings.inject(0) {|sum, x| sum + x}
         @avg_rating = @ratings_sum / Review.all.size
         erb :"/reviews/reviews"
+      else
+        redirect "/users/home"
+      end
+
     end
 
     post "/review/delete" do
+
+      if session[:email]
         @current_user = User.find_by(email: session[:email])
         @review = Review.all.find_by(user_id: @current_user.id)
         if @review
@@ -37,9 +44,15 @@ class ReviewController < ApplicationController
           @review.save
         end
         redirect "/users/#{@current_user.id}/home#testimonial"
+      else
+        redirect "/users/home"
+      end
+
     end
 
     post "/review/edit" do
+
+      if session[:email]
         @current_user = User.find_by(email: session[:email])
         @review = Review.all.find_by(user_id: @current_user.id)
         if @review
@@ -50,8 +63,11 @@ class ReviewController < ApplicationController
           @review.user_id = @current_user.id
           @review.save
         end
-
         redirect "/users/#{@current_user.id}/home#testimonial"
+      else
+        redirect "/users/home"
+      end
+
     end
 
 end

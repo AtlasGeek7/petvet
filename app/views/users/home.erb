@@ -5,16 +5,21 @@
       <title>PetVet | Client Portal</title>
       <meta name="keywords" content="" />
       <meta name="description" content="" />
-      <link href="/css/templatemo_style.css" type="text/css" rel="stylesheet" />
+
+      <META Http-Equiv="Cache-Control" Content="no-cache">
+      <META Http-Equiv="Pragma" Content="no-cache">
+      <META Http-Equiv="Expires" Content="0">
+
+
+
+
+      <link href="/css/client.css" type="text/css" rel="stylesheet" />
 
       <link rel="icon" href="/img/favicon.ico" type="image/gif" >
 
 
-      <!--
-         Singular Template
-         http://www.templatemo.com/preview/templatemo_359_singular
-         -->
-      <script type="text/javascript" src="/js/jquery.min.js"></script>
+
+
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script type="text/javascript" src="/js/jquery.scrollTo-min.js"></script>
       <script type="text/javascript" src="/js/jquery.localscroll-min.js"></script>
@@ -23,6 +28,7 @@
       <link rel="stylesheet" href="/css/slimbox2.css" type="text/css" media="screen" />
       <script type="text/JavaScript" src="/js/slimbox2.js"></script>
       <!-- Timestamp: 1236819900 -->
+
    </head>
    <body>
       <div id="templatemo_header_wrapper">
@@ -62,7 +68,7 @@
 
 <!-- ################################################### PROFILE ################################################### -->
 
-                  <%if @current_user.user_details%>
+                  <%if @current_user.user_details %>
                   <div class="section" id="about">
                      <div id='main'>
                         <div class="half left">
@@ -71,37 +77,40 @@
                               <div class='non-form-container'>
                                 <div class='imgcontainer' style=' height: 80px'>
                                    <% path = (@current_user.img != nil) ?@current_user.img : '/img/man.png' %>
-                                   <button id='picBtn1000' onclick="upfrmOn(1000);" style="border-radius: 100%; background-color: transparent; width:100px; height: 100px; position: relative; top: -30px; left: 0px;  z-index: 1;" >
-                                   <img src=<%=path%> alt='Avatar' title='Upload photo' class='avatar' >
+                                   <button id='picBtn-1000' onclick="upfrmOn(this.id);" style="border-radius: 100%; background-color: transparent; width:100px; height: 100px; position: relative; top: -30px; left: 0px;  z-index: 1;" >
+                                   <img src=<%= path %> alt='Avatar' title='Upload photo' class='avatar' >
                                    </button>
                                    <div id='fileUp1000'  style='background-color: rgba(248, 248, 248, 0.8); position: relative; top: -120px; display: none; z-index: 10;' >
-                                      <form action="/users/<%=@current_user.id%>/upload" method="post" enctype="multipart/form-data" style='background-color:rgba(245, 245, 245, 0.3); width: 100%; '>
-                                         <input type="file" name="file">
-                                         <input type="submit" value="Upload image">
-                                         <input type="hidden" name="userid" value=<%=@current_user.id%>>
+                                      <form action="/users/<%= @current_user.id %>/uploadpic" method="post" enctype="multipart/form-data" style='background-color:rgba(245, 245, 245, 0.3); width: 100%; '>
+                                        <input type="file" name="file" id="imgBtn-1000" accept="image/*" onchange="validateFileUp(this.id);">
+                                        <input type="submit" value="Upload image" id="upBtn1000" disabled>
                                       </form>
                                    </div>
                                   </div>
                                   <table style="width: 260px; position: relative; left: -20px;">
                                     <tr>
                                       <td>Name:</td>
-                                      <td class="style-1" style="max-height: 40px;"><%=@current_user.user_details.full_name%></td>
+                                      <td class="style-1" style="max-height: 40px;"><%= @current_user.user_details.full_name %></td>
                                     </tr>
                                     <tr>
                                       <td>DOB:</td>
-                                      <td><%=@current_user.user_details.dob%></td>
+                                      <td><%= @current_user.user_details.dob %></td>
                                     </tr>
                                     <tr>
                                       <td>Gender:</td>
-                                      <td><%=@current_user.user_details.gender%></td>
+                                      <td><%= @current_user.user_details.gender %></td>
                                     </tr>
                                     <tr>
                                       <td>Address:</td>
-                                      <td  class="style-1" style="max-height: 40px;"><%=@current_user.user_details.address%></td>
+                                      <td>
+                                        <div class="style-1" style="max-height: 100px; overflow-y: auto; overflow-x: hidden; width:100%; padding-right: 5px;">
+                                          <%= @current_user.user_details.address %>
+                                        </div>
+                                      </td>
                                     </tr>
                                     <tr>
                                       <td>Phone:</td>
-                                      <td><%=@current_user.user_details.phone_number%></td>
+                                      <td><%= @current_user.user_details.phone_number %></td>
                                     </tr>
                                   </table>
                               </div>
@@ -115,53 +124,50 @@
                                     <% @current_user.pets.each_with_index do |p,i| %>
                                     <div class='imgcontainer' style=' height: 80px'>
                                        <% path = (p.img != nil) ? p.img : '/img/default.jpg' %>
-                                       <button id='picBtn<%=i%>' onclick="upfrmOn(<%=i%>);" style="border-radius: 100%; background-color: transparent; width:100px; height: 100px; position: relative; top: -30px; left: 0px;  z-index: 1;" >
+                                       <button id='picBtn-<%= i %>' onclick="upfrmOn(this.id);" style="border-radius: 100%; background-color: transparent; width:100px; height: 100px; position: relative; top: -30px; left: 0px;  z-index: 1;" >
                                        <img src=<%=path%> alt='Avatar' title='Upload photo' class='avatar' >
                                        </button>
-                                       <div id='fileUp<%=i%>'  style='background-color: rgba(248, 248, 248, 0.5); position: relative; top: -120px; display: none; z-index: 10;' >
-                                          <form action="/users/<%=@current_user.id%>/upload" method="post" enctype="multipart/form-data" style='background-color:rgba(245, 245, 245, 0.3); width: 100%; '>
-                                             <input type="file" name="file">
-                                             <input type="submit" value="Upload image">
-                                             <input type="hidden" name="petid" value=<%=p.id%>>
+                                       <div id='fileUp<%= i %>'  style='background-color: rgba(248, 248, 248, 0.5); position: relative; top: -120px; display: none; z-index: 10;' >
+                                          <form action="/pets/<%= p.id %>/uploadpic" method="post" enctype="multipart/form-data" style='background-color:rgba(245, 245, 245, 0.3); width: 100%; '>
+                                             <input type="file" name="file" id="imgBtn-<%=i%>" accept="image/*" onchange="validateFileUp(this.id);">
+                                             <input type="submit" value="Upload image" id="upBtn<%= i %>" disabled>
                                           </form>
                                        </div>
                                     </div>
                                     <hr>
-                                    <form action='/users/<%=@current_user.id%>/form' method='post' id='petInf<%=i%>' style='width: 220px; height: 200px; background-color: #f0f0f2;'>
-                                       <fieldset id='fld<%=i%>' disabled  style='width: 197px; height: 185px;' >
+                                    <form action='/pets/<%= p.id %>/update' method='post' id='petInf<%= i %>' style='width: 220px; height: 200px; background-color: #f0f0f2;'>
+                                       <fieldset id='fld<%= i %>' disabled  style='width: 197px; height: 185px;' >
                                           <label class='pet_name' for='pet_name'><b>Name:</b></label>
-                                          <input class='pet_name' type='text' value=<%=p.name%> name='pet_name' required>
+                                          <input class='pet_name' type='text' value=<%= p.name %> name='pet_name' required>
                                           <br />
                                           <label class='pet_age' for='pet_age'><b>Age:</b></label>
-                                          <input class='pet_age' type='text' value=<%=p.age%> name='pet_age' required>
+                                          <input class='pet_age' type='text' value=<%= p.age %> name='pet_age' required>
                                           <br />
-                                          <hr>
+                                          <hr />
                                           <label class='gender' for='gender'><b>Gender:</b></label>
-                                          <select name='pet_gender' id='gender' required>
+                                          <select name='pet_gender' class='gender' required>
                                              <% bool_one = (p.gender == 'Male') ? 'selected' : '' %>
                                              <% bool_two = (p.gender == 'Female') ? 'selected' : '' %>
                                              <option value='Male' <%= bool_one %>>Male</option>
                                              <option value='Female' <%= bool_two %>>Female</option>
                                           </select>
-                                          <br>
+                                          <br />
                                           <label class='address' for='address'><b>Breed:</b></label>
-                                          <input type='text' class='address' value=<%=p.breed%> name='breed' required>
-                                          <input type="hidden" name="cmd<%=i%>" value='update<%=i%>'>
-                                          <input type="hidden" name="petid<%=i%>" value=<%=p.id%>>
+                                          <input type='text' class='address' value=<%= p.breed %> name='breed' required>
                                           <button id='sndBtn<%=i%>' type='submit' style='visibility: hidden; position:relative; top: -5px; left: 105px;  width: 60px; height: 30px;'>Submit</button>
                                        </fieldset>
                                     </form>
                                     <% if @current_user.pets.size > 1 %>
-                                    <form action='/users/<%=@current_user.id%>/delpet' method='post' style="background: transparent !important; width: 1px; height: 1px; position: relative; top: -65px; left: 187px; " >
-                                       <input type="hidden" name="petid" value=<%=p.id%>>
-                                       <button type="submit" id='delBtn<%=i%>' style=" border-radius: 100%; background-color: Transparent; width:30px; height: 30px; position: relative; top: 20px; left: 0px;" >
+                                    <form action='/pets/<%= p.id %>/delpet' method='post' style="background: transparent !important; width: 1px; height: 1px; position: relative; top: -65px; left: 187px; " >
+                                       <input type="hidden" name="petid" value=<%= p.id %>>
+                                       <button type="submit" id='delBtn<%= i %>' style=" border-radius: 100%; background-color: Transparent; width:30px; height: 30px; position: relative; top: 20px; left: 0px;" >
                                        <img src="/img/x.png" width="20" height="20" title="Delete" alt="Delete" style="border-radius: 100%; position: relative; top: 0px; left: -3px;" >
                                        </button>
                                     </form>
                                     <%end%>
-                                    <button type="button" id='editBtn<%=i%>' name="button" onclick='frmOn(<%=i%>);' style='position:relative; top: -47px; left: 20px; width: 55px; height: 30px;' >Edit</button>
+                                    <button type="button" id='editBtn<%= i %>' name="button" onclick='frmOn(<%= i %>);' style='position:relative; top: -47px; left: 20px; width: 55px; height: 30px;' >Edit</button>
                                     <%end%>
-                                    <hr>
+                                    <hr />
                                  </div>
                               </div>
                            </div>
@@ -179,7 +185,7 @@
                         <a href="#book" class="page_nav_btn next">Next</a>
                      </div>
                      <div id='addPet' align="center" style=" display: none; width: 780px; height: 460px; background: rgba(255, 255, 255, 0.8); z-index: 1; position: relative; top: -25px; ">
-                        <form class="entry" action='/users/<%=@current_user.id%>/form' method='post' class='details' style='position: relative; top: 100px; height: 300px; left: 0px; border-radius: 5px;'>
+                        <form class="entry" action='/pets/<%=@current_user.id%>/add' method='post' class='details' style='position: relative; top: 100px; height: 300px; left: 0px; border-radius: 5px;'>
                            <div id='frm' style='  position: relative; top: -80px; left: 0px;'>
                               <%= pet_info_form %>
                               <br />
@@ -235,9 +241,10 @@
 <!-- ################################################### BOOK ################################################### -->
 
                   <div class="section" id="book">
+                    <%if !@current_user.appointments.first %>
                      <div class="half left">
-                        <%if !@current_user.appointments.first %>
-                        <div align='center' class="show-container" >
+
+                        <div align='center' class="show-container" style="margin-right: 0px; position: relative; left: 180px;">
                           <form action='/appointment/book' method='post' id='appointment'>
                           <p id="p_prof">APPOINTMENT <span>FORM</span></p>
                               <div class='imgcontainer' style="position: relative; top: -20px;">
@@ -247,7 +254,7 @@
                               <div class='container' style="position: relative; top: -40px;">
                                   <label for='doctor'><b>Doctor:</b></label>
                                   <br />
-                                  <select name='doctor' form='appointment' id='doctor'>
+                                  <select name='doctor' form='appointment' class='doctor'>
                                       <option value="default" selected>Select doctor</option>
                                       <% Employee.all.each do |e| %>                             <!-- REFACTOR to @employee.all.each -->
                                       <option value='<%=e.id%>'><%=e.name%></option>
@@ -256,7 +263,7 @@
                                   <br />
                                   <label for='doctor'><b>Pet:</b></label>
                                   <br />
-                                  <select name='pet_name' form='appointment' id='doctor'>
+                                  <select name='pet_name' form='appointment' class='doctor'>
                                       <option value="default" selected>Select your pet</option>
                                       <% @current_user.pets.all.each do |p| %>                             <!-- REFACTOR to @employee.all.each -->
                                       <option value='<%=p.name%>'><%=p.name%></option>
@@ -265,7 +272,7 @@
                                   <br />
                                   <label for='doctor'><b>Reason:</b></label>
                                   <br />
-                                  <select name='reason' form='appointment' id='doctor'>
+                                  <select name='reason' form='appointment' class='doctor'>
                                       <option value="default" selected>&nbsp;</option>
                                       <option value='consultation'>Consultation</option>
                                       <option value="surgery">Surgery</option>
@@ -274,7 +281,7 @@
                                   </select>
                                   <br />
                                   <label class='date' for='date'><b>Date:</b></label>
-                                  <select name='date' form='appointment' id='doctor'>
+                                  <select name='date' form='appointment' class='doctor'>
                                      <option value='04/04/2020 | 03:30pm'>04/04/2020 | 03:30pm</option>
                                      <option value="04/07/2020 | 10:30am">04/07/2020 | 10:30am</option>
                                      <option value='04/07/2020 | 01:00pm'>04/07/2020 | 01:00pm</option>
@@ -298,41 +305,66 @@
                           </form>
 
                         </div>
-                        <%end%>
+
                      </div>
+                     <% else %>
                      <div class="half right">
-                        <%if @current_user.appointments.first%>
-                        <div class="show-container style-1" style="overflow-x: hidden; overflow-y: auto; width: 260px; height: 360px; margin-right: 60px; position: relative; left: -110px;">
+
+                        <div class="show-container" style="width: 340px; height: 360px; margin-right: 60px; position: relative; left: -280px;">
                            <section id="upcoming" >
 
                               <div class='imgcontainer'>
                                  <img src='/img/doc-apt.webp' alt='Avatar' class='avatar' style="position: relative; top: -30px;">
                               </div>
-                              <h6 style="position: relative; top: -140px; left: 75px; background: rgba(0, 0, 0, 0.6); width: 100px; border-radius: 10px; border-style: dotted dashed solid double; color: white;">
+                              <h6 style="position: relative; top: -140px; left: 112px; background: rgba(0, 0, 0, 0.6); width: 110px; border-radius: 10px; border-style: dotted dashed solid double; color: white;">
                               &nbsp; APPOINTMENT
                               </h6>
-                              <div class="style-1" style="overflow-y: auto; max-height: 400px; position: relative; top: -80px;">
+                              <% if @current_user.appointments.first.status == "confirmed" %>
+                              <button id='cancAppt' onclick="cancAppt();" style="float: right; border-radius: 100%; background-color: transparent; width:40px; height: 40px; position: relative; top: -28px; left: 100px;  z-index: 1;" >
+                              <img src="/img/cancel.png" width="32" height="32" title="Cancel" alt="Cancel" style="border-radius: 100%; position: relative; top: 1px; left: -4px;">
+                              </button>
+                              <% end %>
+                              <div class="style-1" align="center" style="overflow-y: auto; overflow-x: hidden; max-height: 300px; position: relative; top: -80px;">
                                  <% @current_user.appointments.each do |a| %>
-                                 <hr>
-                                 <p class="detail_title">Doctor:</p>
-                                 <p><%=@doctor.name%></p>
-                                 <p class="detail_title">Date:</p>
-                                 <p><%=a.apt_date%></p>
-                                 <p class="detail_title">Comments:</p>
-                                 <p><%=a.symptoms%></p>
-                                 <p class="detail_title">Reason:</p>
-                                 <p><%=a.reason%></p>
-                                 <p class="detail_title">Status:</p>
-                                 <p><%=a.status%></p>
-                                 <%end%>
+                                 <hr />
+                                 <table style="width: 320px; position: relative; left: 0px;">
+                                   <tr>
+                                     <td>Doctor:</td>
+                                     <td class="style-1" style="max-height: 40px;"><%= @doctor.name %></td>
+                                   </tr>
+                                   <tr>
+                                     <td>Date:</td>
+                                     <td><%= a.apt_date %></td>
+                                   </tr>
+                                   <tr>
+                                     <td>Comments:</td>
+                                     <td>
+                                       <div class="style-1" style="max-height: 100px; overflow-y: auto; overflow-x: hidden; width:100%; padding-right: 5px;"> <%= a.symptoms %> </div>
+                                     </td>
+                                   </tr>
+                                   <tr>
+                                     <td>Reason:</td>
+                                     <td><%= a.reason %></td>
+                                   </tr>
+                                   <tr>
+                                     <td>Status:</td>
+                                     <td><%= a.status %></td>
+                                   </tr>
+                                 </table>
+                                 <% end %>
                               </div>
                            </section>
                         </div>
-                        <%end%>
+
                      </div>
+                     <% end %>
+
                      <a href="#home" class="home_btn">home</a>
                      <a href="#about" class="page_nav_btn previous">Previous</a>
                      <a href="#medicines" class="page_nav_btn next">Next</a>
+                     <div id='load-page-2' align="center" style=" display: none; width: 780px; height: 520px; background: rgba(0, 0, 0, 1); z-index: 1001; position: relative; top: -20px; ">
+                         <img src="/img/paw.gif" width="60" height="60" style="position: relative; top: 210px; left: 180px; ">
+                     </div>
                   </div>
 <!-- ################################################### MEDS ################################################### -->
 
@@ -356,6 +388,7 @@
                                     <hr>
                                     <% end %>
                                     <% else %>
+                                    <hr />
                                     <p>Nothing here yet...</p>
                                     <% end %>
                                  </div>
@@ -384,10 +417,11 @@
                           </h4>
                           <div class="style-1" style="overflow-y: auto; overflow-x: hidden; max-height: 300px; position: relative; top: -60px;">
                            <h4><%= @review.title%><img id="star_<%= @review.rating %>" src="/img/transp.png" width="1" height="1" style="float: right;"></h4>
-                           <hr>
+                           <br />
+                           <hr />
                            <p><%= @review.content%></p>
-                           <hr>
-                           <p style="float: right;">	Posted: <span><%= @review.date%></span> | By: <%= "#{@current_user.user_details.full_name.split(' ').first.capitalize}."  %> </p>
+                           <hr />
+                           <p style="float: right; margin-right: 10px;">	Posted: <span><%= @review.date%></span> | By: <%= "#{@current_user.user_details.full_name.split(' ').first.capitalize}."  %> </p>
                         </div>
                         </div>
                         <button onclick="cancEditRev();">Cancel</button>
@@ -407,7 +441,7 @@
                               </h4>
                               <div class="container" style="position: relative; top: -100px;">
                               <label class="title" for="title"><b>Title:</b></label>
-                              <input class="title" type="text"  name="title"  placeholder="Enter a title" value='<%= @review.title %>' required>
+                              <input class="title" type="text"  name="title"  placeholder="Enter a title" value='<%= @review.title %>'>
                               <br />
                               <label class="content" for="content"><b>&nbsp;</b></label>
                               <br />
@@ -415,6 +449,13 @@
                               <br />
                               <label class="rating" for="rating"><b>Rate us:</b></label>
                               <select name="rating" for="review">
+                                <% rating =  @review.rating %>
+                                <% val = '1' if rating == 'one' %>
+                                <% val = '2' if rating == 'two' %>
+                                <% val = '3' if rating == 'three' %>
+                                <% val = '4' if rating == 'four' %>
+                                <% val = '5' if rating == 'five' %>
+                                <option value="default" selected><%= val %></option>
                                  <option value="one">1</option>
                                  <option value="two">2</option>
                                  <option value="three">3</option>
@@ -443,7 +484,7 @@
                             </h4>
                             <div class="container" style="position: relative; top: -100px;">
                             <label class="title" for="title"><b>Title:</b></label>
-                            <input class="title" type="text"  name="title"  placeholder="Enter a title"  required>
+                            <input class="title" type="text"  name="title"  placeholder="Enter a title" >
                             <br />
                             <label class="content" for="content"><b>&nbsp;</b></label>
                             <br />
@@ -469,7 +510,7 @@
                      <a href="#home" class="home_btn">home</a>
                      <a href="#medicines" class="page_nav_btn previous">Previous</a>
                      <a href="#chat" class="page_nav_btn next">Next</a>
-                     <div id='load-page' align="center" style=" display: none; width: 780px; height: 520px; background: rgba(0, 0, 0, 0.7); z-index: 1001; position: relative; top: -950px; ">
+                     <div id='load-page-1' align="center" style=" display: none; width: 780px; height: 520px; background: rgba(0, 0, 0, 1); z-index: 1001; position: relative; top: -950px; ">
                          <img src="/img/paw.gif" width="60" height="60" style="position: relative; top: 210px; left: 0px; ">
                      </div>
                   </div>
@@ -479,14 +520,13 @@
 <!-- ################################################### CHAT ################################################### -->
 
                   <div class="section" id="chat">
-                     <h1>Contact Information</h1>
+                     <h3>Contact Information</h3>
                      <div class="half right">
 
 
                         <div align="center">
-                           <form action='/users/<%=@current_user.id%>/chat' method='post' id='chat'>
-                              <input type="text" id="msg" name="txtbox" maxlength="47" size="47" placeholder="Type your message here..." style="position: relative; left: -50px; border: 5px solid #ccc;">
-                        <!--      <button type="submit" id="sendbtn" style="position: relative; top: -42px; left: 175px; width: 50px; height: 30px; text-align: justify;">Send</button>  -->
+                           <form action='/users/<%= @current_user.id %>/chat' method='post' id='chat'>
+                              <input type="text" autocomplete="off" id="msg" name="txtbox" maxlength="47" size="47" placeholder="Type your message here..." style="position: relative; left: -50px; border: 5px solid #ccc;">
                            </form>
 
                            <button id="ajaxBtn" onclick="postMsg(); " style="position: relative; top: -42px; left: 175px; width: 50px; height: 30px; text-align: justify;"> Send </button>
@@ -494,13 +534,22 @@
 
 
                           <!--    <h4> Nothing here yet! </h4> -->
+                          <% if @current_user.cid == 0 %>
                           <p><span id="date"> Welcome to Live Chat! </p>
+                            <% else %>
+                            <div id='load-page-3' align="center" style=" display: block; width: 100%; height: 100%; background: rgba(0, 0, 0, 1); z-index: 11;  ">
+                                <img src="/img/paw.gif" width="60" height="60" style="position: relative; top: 130px; left: 0px; ">
+                            </div>
+                            <% end %>
 
                            </div>
-                           <div id="statusBox" class="style-1" style="background-color: white; width: 240px; float: right; position: relative; top: -300px; max-height: 200px; overflow-y: auto; overflow-x: hidden;">
+
+
+                           <% if @current_user.cid == 0 %>
+                           <div id="statusBox" class="style-1" style="z-index: 10; background-color: white; width: 240px; float: right; position: relative; top: -300px; max-height: 200px; overflow-y: auto; overflow-x: hidden;">
                              <div id="innerStatusBox" class="style-1" style="display: block;">
                             <table style="width: 260px; ">
-                            <% Employee.all.each_with_index do |e,i| %>
+                              <% Employee.all.each do |e| %>
                              <tr>
                                <td> <%= "#{e.name.split(' ').first} #{e.name.split(' ').last[0].capitalize}." %> </td>
                                  <% if e.status == -1 %>
@@ -520,8 +569,12 @@
                             </table>
                              </div>
                            </div>
+                           <% end %>
+
                         </div>
                      </div>
+
+
                      <div class="half left">
                         <h4>PetVet</h4>
                         1611 S. Grand Blvd.<br />
@@ -613,7 +666,7 @@
       <div id="templatemo_footer_wrapper">
          <div id="templatemo_footer">
             <p>Copyright © 2020 PetVet | Designed & developed by AtlasGeek7
-               <a class='nav-link' href='/user_logout' id='log-out-button'>	<button style="float: right; border-radius: 100%; background-color: transparent; width:40px; height: 40px; position: relative; top: -28px; left: 100px;" >
+               <a class='nav-link' href='/user_logout' id='log-out-button'>	<button id="exitBtn" onclick="exit();" style="float: right; border-radius: 100%; background-color: transparent; width:40px; height: 40px; position: relative; top: -28px; left: 100px;" >
                <img src="/img/logout.png" width="40" height="40" title="Logout" alt="Add New Pet" style="border-radius: 100%; position: relative; top: -3px; left: -8px;">
                </button>
                </a>
@@ -622,7 +675,7 @@
       </div>
 <!-- ################################################### END OF FOOTER ################################################### -->
 
-      <!-- templatemo 359 singular -->
-      <script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript" src="/js/client/script.js"></script>
+
    </body>
 </html>

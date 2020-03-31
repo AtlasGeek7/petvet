@@ -1,13 +1,9 @@
 class AppointmentsContoller < ApplicationController
 
-    get "/users/:id/home#book" do
-        @current_user = User.find_by(email: session[:email])
-        erb :"/users/#{@current_user.id}/home#book"
-    end
-
     post "/appointment/book" do
-        @current_user = User.find_by(email: session[:email])
-        #if !(@current_user.appointments)
+
+      if session[:email]
+          @current_user = User.find_by(email: session[:email])
           @appointment = Appointment.new
           @appointment.symptoms = params[:symptoms]
           @appointment.apt_date = params[:date]
@@ -18,30 +14,53 @@ class AppointmentsContoller < ApplicationController
           @appointment.user_id = @current_user.id
           @appointment.status = "pending"
           @appointment.save
-        #end
-        redirect "/users/#{@current_user.id}/home#book"
+          redirect "/users/#{@current_user.id}/home#book"
+        else
+          redirect "/users/home"
+        end
+
     end
 
-    get "/employee/:id/appointments/edit" do
-        @current_employee = Employee.find_by(email: session[:email])
-        @appointments = Appointment.all.select { |a| a.employee_id == @current_employee.id }
-        @pending_apts = @appointments.select { |a| a.status == "pending"}
-        redirect "/users/#{@current_user.id}/index#appt"
-    end
+    post "/appointment/confirm" do
 
-    post "/appointment/update" do
-        @current_employee = Employee.find_by(email: session[:email])
-        @appointment = Appointment.all.find_by(id: params.first[0])
-        @appointment.status = "confirmed"
-        @appointment.save
-        redirect "/users/#{@current_user.id}/index#appt"
+      if session[:email]
+          @current_employee = Employee.find_by(email: session[:email])
+          @appointment = Appointment.all.find_by(id: params.first[0])
+          @appointment.status = "confirmed"
+          @appointment.save
+          redirect "/employee/#{@appointment.employee_id}/index#appt"
+        else
+          redirect "/employee/index"
+        end
+
     end
 
     post "/appointment/delete" do
+
+      if session[:email]
         @current_employee = Employee.find_by(email: session[:email])
         @appointment = Appointment.all.find_by(id: params.first[0])
         @appointment.destroy
-        redirect "/users/#{@current_user.id}/index#appt"
+        redirect "/employee/#{@appointment.employee_id}/index#appt"
+      else
+        redirect "/employee/index"
+      end
+
     end
+
+    post "/appointment/cancel" do
+
+      if session[:email]
+        @current_user = User.find_by(email: session[:email])
+        @appointment = @current_user.appointments.all.first
+        @appointment.destroy
+        @appointment.save
+        redirect "/users/#{@current_user.id}/home#book"
+      else
+        redirect "/users/home"
+      end
+
+    end
+
 
 end

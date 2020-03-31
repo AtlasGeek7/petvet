@@ -1,7 +1,7 @@
 class ApplicationController < Sinatra::Base
 
     configure do
-        set :public_folder, "public"   
+        set :public_folder, "public"
         set :views, "app/views"
         enable :sessions
         set :session_secret, "meow"
@@ -11,15 +11,11 @@ class ApplicationController < Sinatra::Base
         erb :index
     end
 
-    get "/contact" do
-        erb :contact
-    end
-
     helpers do
 
         def login(email, password)
-            user = User.find_by(email: email) 
-            if user && user.authenticate(password) 
+            user = User.find_by(email: email)
+            if user && user.authenticate(password)
                 session[:email] = user.email
             else
                 redirect "/login"
@@ -31,8 +27,8 @@ class ApplicationController < Sinatra::Base
         end
 
         def login_employee(email, password)
-           employee = Employee.find_by(email: email) 
-           if employee && employee.authenticate(password) 
+           employee = Employee.find_by(email: email)
+           if employee && employee.authenticate(password)
                session[:email] = employee.email
                employee.status = 1
                employee.save
@@ -53,41 +49,39 @@ class ApplicationController < Sinatra::Base
             !!current_employee
         end
 
-        def add_account
-            if logged_in?
-                "/account"
-            end
-        end
-
         def employee_logout!
           @current_employee = Employee.find_by(email: session[:email])
-          ecid = @current_employee.cid
-          if ecid != 0
-            @chat_user = User.find_by(id: ecid)
-            @chat_user.cid = 0
-            @chat_user.save
-            @current_employee.cid = 0
-            @current_employee.messages = "Welcome to Live Chat!~"
+          if @current_employee
+            ecid = @current_employee.cid
+            if ecid != 0
+              @chat_user = User.find_by(id: ecid)
+              @chat_user.cid = 0
+              @chat_user.save
+              @current_employee.cid = 0
+              @current_employee.messages = "Welcome to Live Chat!~"
+            end
+            @current_employee.status = -1
+            @current_employee.save
+            session.clear
           end
-          @current_employee.status = -1
-          @current_employee.save
-          session.clear
           redirect "/"
         end
 
         def user_logout!
           @current_user = User.find_by(email: session[:email])
-          @current_user.cid = 0
-          @current_user.save
-          session.clear
+          if @current_user
+            ecid = @current_user.cid
+            if ecid != 0
+              @chat_employee = Employee.find_by(id: ecid)
+              @chat_employee.cid = 0
+              @chat_employee.messages = "[ #{Time.now.strftime("%b-%m-%d %H:%M:%S")} (CT) ] ChatBot: <br />#{@current_user.user_details.full_name.split(' ').first.capitalize} has left the chatroom.!~ Welcome to Live Chat!~"
+              @chat_employee.save
+              @current_user.cid = 0
+              @current_user.save
+            end
+            session.clear
+          end
           redirect "/"
-        end
-
-        def format_str(str)
-          strArr = str.strip.split(' ')
-          s = ''
-          strArr.each { |w| s += "#{w.capitalize} " }
-          return s.strip
         end
 
         def add_user_detail_form

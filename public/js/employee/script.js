@@ -1,18 +1,22 @@
-
+var msgTimer = null
 
   function getMsg() {
-  //s  alert('getMsg()')
+  //  alert('getMsg()')
       $.get("/employee/chat_history", function(data, status){
         if (status == 'success') {
           // alert("\nStatus: " + status);
-          // alert('?')
+          // alert(data)
           $("#msgbox").html(data)
         //  alert($("#msgbox").contents().length)
           if ($("#msgbox").contents().length > 3 ) {
             $("#statusToggler").prop("checked", true)
             $("#chatOn").css("display","block")
             updateStatus()
-              }
+          } else {
+            $("#statusToggler").prop("checked", false)
+            $("#chatOn").css("display","none")
+            updateStatus()
+          }
         } else {
           alert("failed!")
         }
@@ -92,7 +96,7 @@ $(document).ready(function(){
     });
 
 //  }
-  setInterval(getMsg,10000)
+  msgTimer = setInterval(getMsg,10000)
   // setInterval(getStatus,10000)
   // alert($('#cidBtn').attr("value"))
   //  setInterval(alert($('#cidBtn').attr("value")),10000)
@@ -106,4 +110,19 @@ function showSignUp() {
 function showSignIn() {
   document.getElementById("signUpDiv").style.zIndex  = "-1"
   document.getElementById("signInDiv").style.zIndex  = "10"
+}
+
+
+//window.addEventListener('beforeunload', function (e) {
+  // Cancel the event
+  //e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+  // Chrome requires returnValue to be set
+  //alert('Bye!')
+  //e.returnValue = '';
+//});
+
+
+function exit() {
+  clearInterval(msgTimer)
+  alert('Thanks for using our portal!')
 }
