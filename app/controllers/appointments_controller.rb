@@ -35,11 +35,11 @@ class AppointmentsContoller < ApplicationController
 
     end
 
-    post "/appointment/delete" do
+    delete "/appointment/delete" do
 
       if session[:email]
         @current_employee = Employee.find_by(email: session[:email])
-        @appointment = Appointment.all.find_by(id: params.first[0])
+        @appointment = Appointment.all.find_by(id: params[:appointment_id])
         @appointment.destroy
         redirect "/employee/#{@appointment.employee_id}/index#appt"
       else

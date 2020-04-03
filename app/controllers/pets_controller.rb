@@ -49,12 +49,12 @@ class PetsController < ApplicationController
 
     if session[:email]
       if (params[:file])
-        @filename = params[:file][:filename]
+        filename = params[:file][:filename]
         file = params[:file][:tempfile]
         @pet = Pet.find(params[:id])
-        @pet.img = "/img/#{@filename}"
+        @pet.img = "/img/#{filename}"
         @pet.save
-        File.open("./././public/img/#{@filename}", 'wb') do |f|
+        File.open("./././public/img/#{filename}", 'wb') do |f|
           f.write(file.read)
         end
         redirect "/users/#{@pet.user_id}/home#about"

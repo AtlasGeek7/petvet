@@ -115,14 +115,12 @@ class UsersController < ApplicationController
           @current_user = User.find_by(email: session[:email])
           @appointment_ids = Appointment.all.pluck(:user_id)
           @current_user.pets.each do |p|
-            if p.medicines.size > 0
-                @medicine = p.medicines
-            end
           end
           if @appointment_ids.include?(@current_user.id)
               @appointment = Appointment.find_by(user_id: @current_user.id)
               @doctor = Employee.find_by(id: @appointment.employee_id)
           end
+          @review = Review.all.find_by(user_id: @current_user.id)
           erb :"/users/home"
         else
           redirect "/"
@@ -185,12 +183,12 @@ class UsersController < ApplicationController
 
       if session[:email]
         if (params[:file])
-          @filename = params[:file][:filename]
+          filename = params[:file][:filename]
           file = params[:file][:tempfile]
           @current_user = User.find_by(email: session[:email])
-          @current_user.img = "/img/#{@filename}"
+          @current_user.img = "/img/#{filename}"
           @current_user.save
-          File.open("./././public/img/#{@filename}", 'wb') do |f|
+          File.open("./././public/img/#{filename}", 'wb') do |f|
             f.write(file.read)
           end
           redirect "/users/#{params[:id]}/home#about"

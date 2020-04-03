@@ -321,13 +321,10 @@ $(document).ready(function(){
 			                <img src='/img/medicine.svg' alt='Avatar' class='avatar'>
 			            </div>
 
-
 			                <label class='patient' for='patient'><b>Prescribing for:</b></label>
 											<br />
 											<select name='patient'>
 			                    <option value="default" selected>Select pet</option>
-													<% @patients = Pet.all %>
-
 			                    <% @patients.each do |p| %>
 			                    <option value=<%= p.id %>><%= p.name %>, <%= p.age %></option>
 			                    <% end %>
@@ -376,8 +373,6 @@ $(document).ready(function(){
 				            <img src='/img/appointment.svg' alt='Avatar' class='avatar'>
 				         </div>
 				         <div class='container' style="width: 200px; height: 300px; margin-left: -20px;">
-				            <%	@appointments = Appointment.all.select { |a| a.employee_id == @current_employee.id } %>
-				            <%	@pending_apts = @appointments.select { |a| a.status == "pending"} %>
 				            <% if @pending_apts != [] %>
 				            <% @pending_apts.each do |a| %>
 				            <div style="background-color: white; color: black; margin-top: 50px;">
@@ -393,7 +388,8 @@ $(document).ready(function(){
 				                  </form>
 				                  <br />
 				                  <form method="post" action="/appointment/delete">
-				                     <input type="hidden" id="hidden" name="<%= a.id %>">
+				                     <input type="hidden" name="appointment_id" value=<%= a.id %>>
+														 <input id="hidden" type="hidden" name="_method" value="delete">
 				                     <input type="submit" id="m-red" class="button" value=" Cancel">
 				                  </form>
 				                  <br />
@@ -417,7 +413,7 @@ $(document).ready(function(){
 				            &nbsp; APPOINTMENTS
 				         </h6>
 				         <div class="style-1" style="width: 220px; overflow-y: auto; overflow-x: hidden; max-height: 360px; position: relative; top: -70px;">
-				            <%	@appointments = Appointment.all.select { |a| a.status == "confirmed"} %>
+				            <%	@appointments = Appointment.all.select { |a| a.status == "confirmed"  && a.employee_id == @current_employee.id} %>
 				            <% @appointments.each do |a| %>
 				            <hr />
 				            <table style="width: 220px; position: relative; left: 0px; color: black; ">
@@ -502,7 +498,7 @@ $(document).ready(function(){
 
         </div>
     </div>
-		
+
 	<script type="text/javascript" src="/js/employee/script.js"></script>
 
 </body>

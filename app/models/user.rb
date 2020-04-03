@@ -4,6 +4,5 @@ class User < ActiveRecord::Base
     has_many :appointments
     has_many :employees, through: :appointments
     has_many :pets
-    #has_many :employees, through: :medicines
     has_many :reviews
 end

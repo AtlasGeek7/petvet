@@ -362,7 +362,7 @@
                      <a href="#home" class="home_btn">home</a>
                      <a href="#about" class="page_nav_btn previous">Previous</a>
                      <a href="#medicines" class="page_nav_btn next">Next</a>
-                     <div id='load-page-2' align="center" style=" display: none; width: 780px; height: 520px; background: rgba(0, 0, 0, 1); z-index: 1001; position: relative; top: -20px; ">
+                     <div id='load-page-2' align="center" style=" display: none; width: 780px; height: 520px; background: rgba(0, 0, 0, 1); z-index: 1001; position: relative; top: -19px; ">
                          <img src="/img/paw.gif" width="60" height="60" style="position: relative; top: 210px; left: 180px; ">
                      </div>
                   </div>
@@ -378,18 +378,16 @@
                               </div>
                               <div align='center'>
                                  <div class="style-1" style="overflow-y: auto; max-height: 340px; width: 60%; text-align: left;">
-                                    <% if @medicine %>
-                                    <% @medicine.each do |x| %>
-                                    <hr>
-                                    <p>Rx: <span><%= x.rx_name %></span> </p>
-                                    <p>	Prescription dosage: <span><%= x.pill_count %></span> x <span><%= x.pill_size %> mg </span></p>
-                                    <p>	Prescribed for: <%= Pet.find_by(id: x.pet_id).name %>. </p>
-                                    <p class="by_doctor"> By: Dr. <%= Employee.find_by(id: x.employee_id).name %> . </p>
-                                    <hr>
-                                    <% end %>
-                                    <% else %>
+                                  <% @current_user.pets.each do |p| %>
+                                    <% if p.medicines.size > 0 %>
+                                    <% p.medicines.each do |m| %>
+                                    <p>Rx: <span><%= m.rx_name %></span> </p>
+                                    <p>	Prescription dosage: <span><%= m.pill_count %></span> x <span><%= m.pill_size %> mg </span></p>
+                                    <p>	Prescribed for: <%= Pet.find_by(id: m.pet_id).name %>. </p>
+                                    <p class="by_doctor"> Prescribed by: Dr. <%= Employee.find_by(id: m.employee_id).name %> . </p>
                                     <hr />
-                                    <p>Nothing here yet...</p>
+                                    <% end %>
+                                    <% end %>
                                     <% end %>
                                  </div>
                               </div>
@@ -406,7 +404,7 @@
 
                      <div align='center'>
 
-                        <% @review = Review.all.find_by(user_id: @current_user.id) %>
+
                         <% if @review %>
                         <div class="review">
                           <div class="imgcontainer" style="position: relative; top: -40px;">
@@ -431,7 +429,7 @@
 
                         <div id="editRev" align="center" style="z-index: 3; position: relative; top: 100px;">
 
-                            <form id=revfrm" action="/review/edit" method="post" class="review"   >
+                            <form id="revfrm" action="/review/edit" method="post" class="review"   >
 
                               <div class="imgcontainer" style="position: relative; top: -40px;">
                                 <img src="/img/reviews.png" alt="Avatar" class="avatar">
@@ -464,8 +462,8 @@
                               </select>
                               <br />
                               <label class="password" for="password"><b>Type your password:</b></label>
-
                               <input class="password" type="password" name="password" placeholder="Enter your current password here..." required>&nbsp;
+                              <input type="hidden" name="_method" value="patch">
                               <button type="submit" style="background-color: rgb(252,252,252); height: 35px; width: 65px; position: relative; top: -5px;">Confirm</button>
                               </form>
                            </div>
@@ -491,7 +489,7 @@
                             <textarea class="style-1" placeholder="Share your experience here..." name="content" rows="11" cols="50"></textarea>
                             <br />
                             <label class="rating" for="rating"><b>Rate us:</b></label>
-                            <select name="rating" for="review">
+                            <select name="rating" for="review" required>
                                <option value="one">1</option>
                                <option value="two">2</option>
                                <option value="three">3</option>

@@ -267,7 +267,11 @@ function cancEditRev() {
 function delRev() {
   var r = confirm("Your review will be deleted. Proceed anyway?");
   if (r == true) {
-      $.post("/review/delete", function(data, status){
+      $.delete("/review/delete",
+        {
+          _method: "delete",
+        },
+        function(data,status){
         if (status == 'success') {
           // alert("\nStatus: " + status);
 
