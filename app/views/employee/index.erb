@@ -413,7 +413,6 @@ $(document).ready(function(){
 				            &nbsp; APPOINTMENTS
 				         </h6>
 				         <div class="style-1" style="width: 220px; overflow-y: auto; overflow-x: hidden; max-height: 360px; position: relative; top: -70px;">
-				            <%	@appointments = Appointment.all.select { |a| a.status == "confirmed"  && a.employee_id == @current_employee.id} %>
 				            <% @appointments.each do |a| %>
 				            <hr />
 				            <table style="width: 220px; position: relative; left: 0px; color: black; ">

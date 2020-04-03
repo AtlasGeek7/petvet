@@ -114,13 +114,13 @@ class UsersController < ApplicationController
         if (logged_in?)
           @current_user = User.find_by(email: session[:email])
           @appointment_ids = Appointment.all.pluck(:user_id)
-          @current_user.pets.each do |p|
-          end
+          @pets = @current_user.pets.all
           if @appointment_ids.include?(@current_user.id)
               @appointment = Appointment.find_by(user_id: @current_user.id)
               @doctor = Employee.find_by(id: @appointment.employee_id)
           end
           @review = Review.all.find_by(user_id: @current_user.id)
+          @employees = Employee.all
           erb :"/users/home"
         else
           redirect "/"

@@ -254,25 +254,25 @@
                               <div class='container' style="position: relative; top: -40px;">
                                   <label for='doctor'><b>Doctor:</b></label>
                                   <br />
-                                  <select name='doctor' form='appointment' class='doctor'>
+                                  <select name='doctor' form='appointment' class='doctor' required>
                                       <option value="default" selected>Select doctor</option>
-                                      <% Employee.all.each do |e| %>                             <!-- REFACTOR to @employee.all.each -->
+                                      <% @employees.each do |e| %>
                                       <option value='<%=e.id%>'><%=e.name%></option>
                                       <%end%>
                                   </select>
                                   <br />
                                   <label for='doctor'><b>Pet:</b></label>
                                   <br />
-                                  <select name='pet_name' form='appointment' class='doctor'>
+                                  <select name='pet_name' form='appointment' class='doctor' required>
                                       <option value="default" selected>Select your pet</option>
-                                      <% @current_user.pets.all.each do |p| %>                             <!-- REFACTOR to @employee.all.each -->
+                                      <% @pets.each do |p| %>
                                       <option value='<%=p.name%>'><%=p.name%></option>
                                       <%end%>
                                   </select>
                                   <br />
                                   <label for='doctor'><b>Reason:</b></label>
                                   <br />
-                                  <select name='reason' form='appointment' class='doctor'>
+                                  <select name='reason' form='appointment' class='doctor' required>
                                       <option value="default" selected>&nbsp;</option>
                                       <option value='consultation'>Consultation</option>
                                       <option value="surgery">Surgery</option>
@@ -281,7 +281,7 @@
                                   </select>
                                   <br />
                                   <label class='date' for='date'><b>Date:</b></label>
-                                  <select name='date' form='appointment' class='doctor'>
+                                  <select name='date' form='appointment' class='doctor' required>
                                      <option value='04/04/2020 | 03:30pm'>04/04/2020 | 03:30pm</option>
                                      <option value="04/07/2020 | 10:30am">04/07/2020 | 10:30am</option>
                                      <option value='04/07/2020 | 01:00pm'>04/07/2020 | 01:00pm</option>
@@ -547,7 +547,7 @@
                            <div id="statusBox" class="style-1" style="z-index: 10; background-color: white; width: 240px; float: right; position: relative; top: -300px; max-height: 200px; overflow-y: auto; overflow-x: hidden;">
                              <div id="innerStatusBox" class="style-1" style="display: block;">
                             <table style="width: 260px; ">
-                              <% Employee.all.each do |e| %>
+                              <% @employees.each do |e| %>
                              <tr>
                                <td> <%= "#{e.name.split(' ').first} #{e.name.split(' ').last[0].capitalize}." %> </td>
                                  <% if e.status == -1 %>

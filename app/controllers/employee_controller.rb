@@ -43,6 +43,7 @@ class EmployeeController < ApplicationController
         @current_employee = Employee.find_by(email: session[:email])
         @patients = Pet.all
         @pending_apts = Appointment.all.select { |a| a.status == "pending" && a.employee_id == @current_employee.id}
+        @appointments = Appointment.all.select { |a| a.status == "confirmed"  && a.employee_id == @current_employee.id}
         erb :"/employee/index"
       else
         redirect "/users/home"
