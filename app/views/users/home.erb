@@ -246,7 +246,7 @@
 
                         <div align='center' class="show-container" style="margin-right: 0px; position: relative; left: 180px;">
                           <form action='/appointment/book' method='post' id='appointment'>
-                          <p id="p_prof">APPOINTMENT <span>FORM</span></p>
+                          <p class="p_prof">APPOINTMENT <span>FORM</span></p>
                               <div class='imgcontainer' style="position: relative; top: -20px;">
                                   <img src='/img/clock.png' alt='Avatar' class='avatar'>
                               </div>
@@ -255,7 +255,7 @@
                                   <label for='doctor'><b>Doctor:</b></label>
                                   <br />
                                   <select name='doctor' form='appointment' class='doctor' required>
-                                      <option value="default" selected>Select doctor</option>
+                                      <option value="">Select doctor</option>
                                       <% @employees.each do |e| %>
                                       <option value='<%=e.id%>'><%=e.name%></option>
                                       <%end%>
@@ -264,7 +264,7 @@
                                   <label for='doctor'><b>Pet:</b></label>
                                   <br />
                                   <select name='pet_name' form='appointment' class='doctor' required>
-                                      <option value="default" selected>Select your pet</option>
+                                      <option value="">Select your pet</option>
                                       <% @pets.each do |p| %>
                                       <option value='<%=p.name%>'><%=p.name%></option>
                                       <%end%>
@@ -273,7 +273,7 @@
                                   <label for='doctor'><b>Reason:</b></label>
                                   <br />
                                   <select name='reason' form='appointment' class='doctor' required>
-                                      <option value="default" selected>&nbsp;</option>
+                                      <option value="">Select a reason</option>
                                       <option value='consultation'>Consultation</option>
                                       <option value="surgery">Surgery</option>
                                       <option value='follow up'>Follow up</option>
@@ -282,6 +282,7 @@
                                   <br />
                                   <label class='date' for='date'><b>Date:</b></label>
                                   <select name='date' form='appointment' class='doctor' required>
+                                    <option value="">Select a date</option>
                                      <option value='04/04/2020 | 03:30pm'>04/04/2020 | 03:30pm</option>
                                      <option value="04/07/2020 | 10:30am">04/07/2020 | 10:30am</option>
                                      <option value='04/07/2020 | 01:00pm'>04/07/2020 | 01:00pm</option>
