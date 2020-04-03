@@ -1,6 +1,6 @@
 class PetsController < ApplicationController
 
-  post "/pets/:id/update" do
+  patch "/pets/:id/update" do
 
     if session[:email]
       @pet = Pet.find(params[:id])

@@ -154,6 +154,7 @@
                                           <br />
                                           <label class='address' for='address'><b>Breed:</b></label>
                                           <input type='text' class='address' value=<%= p.breed %> name='breed' required>
+                                          <input type="hidden" name="_method" value="patch">
                                           <button id='sndBtn<%=i%>' type='submit' style='visibility: hidden; position:relative; top: -5px; left: 105px;  width: 60px; height: 30px;'>Submit</button>
                                        </fieldset>
                                     </form>
@@ -399,6 +400,9 @@
                      <a href="#book" class="page_nav_btn previous">Previous</a>
                      <a href="#testimonial" class="page_nav_btn next">Next</a>
                   </div>
+
+<!-- ################################################### END OF MEDS ################################################### -->
+
 <!-- ################################################### REVIEW ################################################### -->
 
                   <div class="section" id="testimonial">
@@ -514,7 +518,7 @@
                      </div>
                   </div>
 
-
+<!-- ################################################### END OF REVIEWS ################################################### -->
 
 <!-- ################################################### CHAT ################################################### -->
 
@@ -579,7 +583,7 @@
                         1611 S. Grand Blvd.<br />
                         St. Louis, Missouri, 63104<br />
                         <strong>Phone:</strong><a href="(314) 786-2710"> (314) 786-2710 </a> <br />
-                        <strong>Email:</strong> <a href="mailto:info@petvet.com">info@company.com</a><br />
+                        <strong>Email:</strong> <a href="mailto:info@petvet.com">info@petvet.com</a><br />
                         <div class="clear h20"></div>
                         <div class="img_nom img_border"><span></span>
                            <iframe width="350" height="150" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3117.3174649798543!2d-90.24175358465783!3d38.6185771796147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87d8b48c334d2763%3A0xc287327888170015!2s1611%20S%20Grand%20Blvd%2C%20St.%20Louis%2C%20MO%2063104!5e0!3m2!1sen!2sus!4v1584860474331!5m2!1sen!2sus" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>

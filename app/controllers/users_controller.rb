@@ -1,11 +1,13 @@
 class UsersController < ApplicationController
 
     get "/user_logout" do
+
       if session[:email]
         user_logout!
       else
         redirect "/users/home"
       end
+
     end
 
     get "/users/home" do
@@ -97,7 +99,7 @@ class UsersController < ApplicationController
             @user = User.new(email: params[:email], password: params[:password])
             @user.cid = 0
             @user.save
-                redirect "/users/home"
+            redirect "/users/home"
         elsif users.include?(params[:email]) && params[:cmd] == "login"
           login(params[:email], params[:password])
           @current_user = User.find_by(email: session[:email])
@@ -122,13 +124,10 @@ class UsersController < ApplicationController
           @review = Review.all.find_by(user_id: @current_user.id)
           @employees = Employee.all
           erb :"/users/home"
-        else
-          redirect "/"
         end
       else
         redirect "/users/home"
       end
-
 
     end
 
@@ -158,27 +157,6 @@ class UsersController < ApplicationController
 
     end
 
-    post "/users/:id/chat" do
-
-      if session[:email]
-        @current_user = User.find_by(email: session[:email])
-        if (@current_user.messages)
-          @messages = @current_user.messages.split('~')
-        else
-          @messages = ["Welcome to Live Chat!~"]
-        end
-        msg = params[:txtbox]
-        if (msg.strip != '')
-          @messages.unshift("[ #{Time.now.strftime("%b-%m-%d %H:%M:%S")} (CT) ] #{@current_user.user_details.full_name.split(' ').first.capitalize}: <br /> #{msg}.~")
-          @current_user.messages = @messages.join('~')
-          @current_user.save
-        end
-        redirect "/users/#{@current_user.id}/home#chat"
-      else
-        redirect "/users/home"
-      end
-    end
-
     post '/users/:id/uploadpic' do
 
       if session[:email]
@@ -191,7 +169,7 @@ class UsersController < ApplicationController
           File.open("./././public/img/#{filename}", 'wb') do |f|
             f.write(file.read)
           end
-          redirect "/users/#{params[:id]}/home#about"
+          redirect "/users/#{@current_user.id}/home#about"
         end
       else
         redirect "/users/home"

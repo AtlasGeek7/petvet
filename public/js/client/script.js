@@ -264,14 +264,11 @@ function cancEditRev() {
   $("#editRev").css({ top: '100px' });
   $("#editRev").css({ zIndex: '-1' });
 }
+
 function delRev() {
   var r = confirm("Your review will be deleted. Proceed anyway?");
   if (r == true) {
-      $.delete("/review/delete",
-        {
-          _method: "delete",
-        },
-        function(data,status){
+      $.post("/review/delete", function(data,status){
         if (status == 'success') {
           // alert("\nStatus: " + status);
 

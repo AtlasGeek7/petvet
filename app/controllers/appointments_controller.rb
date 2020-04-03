@@ -54,8 +54,6 @@ class AppointmentsContoller < ApplicationController
         @current_user = User.find_by(email: session[:email])
         @appointment = @current_user.appointments.all.first
         @appointment.destroy
-        @appointment.save
-        redirect "/users/#{@current_user.id}/home#book"
       else
         redirect "/users/home"
       end
