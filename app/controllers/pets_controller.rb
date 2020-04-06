@@ -1,69 +1,86 @@
 class PetsController < ApplicationController
-
-  patch "/pets/:id/update" do
-
-    if session[:email]
-      @pet = Pet.find(params[:id])
-      @pet.name = params[:pet_name]
-      @pet.age = params[:pet_age]
-      @pet.gender = params[:pet_gender]
-      @pet.breed = params[:breed]
-      @pet.save
-      redirect "/users/#{@pet.user_id}/home#about"
+  get '/pets' do
+    if logged_in?
+      @pets = current_user.pets.all
+      erb :'pets/pets'
     else
-      redirect "/users/home"
+      redirect to '/login'
     end
-
   end
 
-  post "/pets/:id/add" do
-
-    if session[:email]
-      @pet = Pet.new
-      @pet.name = params[:pet_name]
-      @pet.age = params[:pet_age]
-      @pet.gender = params[:pet_gender]
-      @pet.breed = params[:breed]
-      @pet.user_id = params[:id]
-      @pet.save
-      redirect "/users/#{params[:id]}/home#about"
+  get '/pets/new' do
+    if logged_in?
+      erb :'pets/create_pet'
     else
-      redirect "/users/home"
+      redirect to '/login'
     end
-
   end
 
-  post "/pets/:id/delpet" do
-
-    if session[:email]
-      @pet = Pet.find(params[:id])
-      @pet.destroy
-      redirect "/users/#{@pet.user_id}/home#about"
-    else
-      redirect "/users/home"
-    end
-
-  end
-
-  post "/pets/:id/uploadpic" do
-
-    if session[:email]
-      if (params[:file])
-        filename = params[:file][:filename]
-        file = params[:file][:tempfile]
-        @pet = Pet.find(params[:id])
-        @pet.img = "/img/#{filename}"
-        @pet.save
-        File.open("./././public/img/#{filename}", 'wb') do |f|
-          f.write(file.read)
+  post '/pets' do
+    if logged_in?
+        @pet = current_user.pets.build(name: params[:pet_name], age: params[:pet_age], gender: params[:pet_gender], breed: params[:pet_breed])
+        if @pet.save
+          redirect to "/pets/#{@pet.id}"
+        else
+          redirect to "/pets/new"
         end
-        redirect "/users/#{@pet.user_id}/home#about"
+    else
+      redirect to '/login'
+    end
+  end
+
+  get '/pets/:id' do
+    if logged_in?
+      @pet = Pet.find_by_id(params[:id])
+      if @pet && @pet.user == current_user
+        erb :'pets/show_pet'
+      else
+        redirect to '/http_404'
       end
     else
-      redirect "/users/home"
+      redirect to '/login'
     end
-
   end
 
+  get '/pets/:id/edit' do
+    if logged_in?
+      @pet = Pet.find_by_id(params[:id])
+      if @pet && @pet.user == current_user
+        erb :'pets/edit_pet'
+      else
+        redirect to '/pets'
+      end
+    else
+      redirect to '/login'
+    end
+  end
 
+  patch '/pets/:id' do
+    if logged_in?
+        @pet = Pet.find_by_id(params[:id])
+        if @pet && @pet.user == current_user
+          if @pet.update(name: params[:pet_name], age: params[:pet_age], gender: params[:pet_gender], breed: params[:pet_breed])
+            redirect to "/pets/#{@pet.id}"
+          else
+            redirect to "/pets/#{@pet.id}/edit"
+          end
+        else
+          redirect to '/pets'
+        end
+    else
+      redirect to '/login'
+    end
+  end
+
+  delete '/pets/:id/delete' do
+    if logged_in?
+      @pet = Pet.find_by_id(params[:id])
+      if @pet && @pet.user == current_user
+        @pet.delete
+      end
+      redirect to '/pets'
+    else
+      redirect to '/login'
+    end
+  end
 end

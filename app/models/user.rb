@@ -1,8 +1,11 @@
 class User < ActiveRecord::Base
-    has_secure_password
-    has_one :user_details
-    has_many :appointments
-    has_many :employees, through: :appointments
-    has_many :pets
-    has_many :reviews
+  has_many :pets
+  has_one :profile
+  has_secure_password
+  def slug
+    username.downcase.gsub(" ","-")
+  end
+  def self.find_by_slug(slug)
+    User.all.find{|user| user.slug == slug}
+  end
 end

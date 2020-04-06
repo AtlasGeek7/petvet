@@ -10,71 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_074134) do
-
-  create_table "appointments", force: :cascade do |t|
-    t.string "symptoms"
-    t.string "reason"
-    t.string "apt_date"
-    t.string "full_name"
-    t.integer "user_id"
-    t.integer "employee_id"
-    t.string "status"
-    t.string "pet_name"
-  end
-
-  create_table "employees", force: :cascade do |t|
-    t.string "name"
-    t.integer "experience"
-    t.string "speciality"
-    t.string "email"
-    t.string "password_digest"
-    t.string "messages"
-    t.integer "status"
-    t.integer "cid"
-  end
-
-  create_table "medicines", force: :cascade do |t|
-    t.string "rx_name"
-    t.integer "pill_count"
-    t.integer "pill_size"
-    t.integer "pet_id"
-    t.integer "employee_id"
-  end
+ActiveRecord::Schema.define(version: 2020_04_06_032437) do
 
   create_table "pets", force: :cascade do |t|
     t.string "name"
     t.string "gender"
-    t.string "age"
+    t.integer "age"
     t.string "breed"
     t.integer "user_id"
-    t.integer "medicine_id"
-    t.string "img"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "reviews", force: :cascade do |t|
-    t.string "title"
-    t.string "content"
-    t.integer "user_id"
-    t.string "rating"
-    t.string "date"
-  end
-
-  create_table "user_details", force: :cascade do |t|
+  create_table "profiles", force: :cascade do |t|
     t.string "full_name"
+    t.integer "age"
     t.string "gender"
-    t.string "address"
-    t.string "dob"
-    t.string "phone_number"
     t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "address"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
+    t.string "username"
+    t.text "email"
     t.string "password_digest"
-    t.string "messages"
-    t.string "img"
-    t.integer "cid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

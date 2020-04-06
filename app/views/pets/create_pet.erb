@@ -1,0 +1,11 @@
+<h2>Add a pet</h2>
+<form action="/pets" method="post">
+  <p>Name: <input type="text" name="pet_name" required></p>
+  <p>Age: <input type="text" name="pet_age" required></p>
+  <p>Gender: <input type="text" name="pet_gender" required></p>
+  <p>Breed: <input type="text" name="pet_breed" required></p>
+  <input class="btn btn-primary" type="submit" value="submit">
+</form>
+
+<br />
+<p>Logged in as: <%=current_user.username %></p>

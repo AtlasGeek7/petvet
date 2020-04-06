@@ -1,257 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<META Http-Equiv="Cache-Control" Content="no-cache">
-<META Http-Equiv="Pragma" Content="no-cache">
-<META Http-Equiv="Expires" Content="0">
-
-<title>PetVet | Home</title>
-<link rel="icon" href="/images/favicon.ico" type="image/gif" >
-<link rel="stylesheet" type="text/css" href="style.css" />
-<script type="text/javascript" src="js/jquery-1.3.2.min.js" ></script>
-<script type="text/javascript" src="js/jquery-ui.min.js" ></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#featured > ul").tabs({fx:{opacity: "toggle"}}).tabs("rotate", 5000, true);
-});
-</script>
-<!-- Cufon START  -->
-<script type="text/javascript" src="js/cufon-yui.js"></script>
-<script src="js/GeosansLight_500.font.js" type="text/javascript"></script>
-<script type="text/javascript">
-Cufon.replace('.logo', { fontFamily: 'GeosansLight' });
-Cufon.replace('h1', { fontFamily: 'GeosansLight' });
-Cufon.replace('h2', { fontFamily: 'GeosansLight' });
-</script>
-<!-- Cufon END  -->
-</head>
-<body>
-<div id="main_container">
+<h2>Welcome to PetVet!</h2>
 
 
-	<div class="header">
+<nav>
+  <% if logged_in? %>
+<p>
+  <% if current_user.profile %>
+    <a href="/profiles"> View Profile </a>
+  <% else %>
+    <a href="/profiles/new"> Create Profile </a>
+  <%end %>
+    <br />
+  <% if current_user.pets != [] %>
+  <a href="/pets"> View Pets </a>
+  <br />
+    <a href="/pets/new"> Add Pet </a>
+  <% else %>
+  <a href="/pets/new"> Add Pet </a>
+  <%end %>
+    <br />
+    <a href="/logout"> Log Out </a>
+</p>
+    <br />
+    <p>Logged in as: <%=current_user.username %></p>
 
-            <div class="logo"><a href="index.html"><img src="images/logo.png" width="180" height="100">| Your #1 pet clinic |</a></div>
+  <% else %>
+  <p>Please signin or signup below:</p>
+    <a href="/signup">Sign Up</a>
+    <a href="/login"> Sign In </a>
+  <%end %>
 
-
-			<div class="header_socials">
-            <a href="#"><img src="images/facebook.png" alt="" title="" border="0" /></a>
-            <a href="#"><img src="images/twitter.png" alt="" title="" border="0" /></a>
-            <br>
-            <br>
-            <a href="/users/home">
-            <button style="border-radius: 10px; background-color: transparent; width:78px; height: 38px;  cursor: pointer; position: relative; top: 0px; left: -10px; " >
-          				<img src="/images/c-portal.png" width="70" height="30" title="Client Portal" alt="Add New Pet" style="border-radius: 5px; position: relative; top: 1px; left: -3px;">
-        			</button>
-            </a>
-
-            <a href="/employee/index" >
-            <button style="border-radius: 10px; background-color: transparent; width:78px; height: 38px; cursor: pointer; float: right; " >
-                  <img src="/images/e-portal.png" width="70" height="30" title="Employee Portal" alt="Add New Pet" style="border-radius: 5%; position: relative; top: 1px; left: -3px;">
-              </button>
-            </a>
-
-            </div>
-
-    </div> <!--end of header-->
-
-    <div class="menu">
-        <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About Us<!--[if IE 7]><!--></a><!--<![endif]-->
-        <!--[if lte IE 6]><table><tr><td><![endif]-->
-            <ul>
-            <li><a href="#" title="">Out Team</a></li>
-            <li><a href="#" title="">Departments</a></li>
-            <li><a href="#" title="">Locations</a></li>
-            </ul>
-        <!--[if lte IE 6]></td></tr></table></a><![endif]-->
-        </li>
-        <li><a href="#">Services<!--[if IE 7]><!--></a><!--<![endif]-->
-        <!--[if lte IE 6]><table><tr><td><![endif]-->
-            <ul>
-            <li><a href="#" title="">Diet & Nutrition</a></li>
-            <li><a href="#" title="">Dentistry</a></li>
-            <li><a href="#" title="">Wellness & Preventive Care</a></li>
-            <li><a href="#" title="">Surgery</a></li>
-						<li><a href="#" title="">Grooming</a></li>
-            </ul>
-        <!--[if lte IE 6]></td></tr></table></a><![endif]-->
-        </li>
-        <li><a href="#">Portfolio</a></li>
-        <li><a href="#">Testimonials</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Contact</a></li>
-        </ul>
-    </div>
-
-
-<div id="slider1" class="sliderwrapper">
-	<div class="slider_content">
-		<div id="featured">
-        <div id="fragment-1" class="ui-tabs-panel" style="">
-            <img src="images/slider_pic1.jpg" alt="" title="" border="0" />
-            <div class="info" >
-            <p>Proper diet and nutrition can help your pet fight against disease, maintain a proper weight, and promote the overall well-being of your pet.</p>
-            </div>
-        </div>
-
-        <div id="fragment-2" class="ui-tabs-panel" style="">
-            <img src="images/slider_pic2.jpg" alt="" title="" border="0" />
-            <div class="info" >
-            <p>Annual dental exams and cleanings are recommended to protect your pet from many health problems and help them maintain a healthy and clean mouth.</p>
-            </div>
-        </div>
-
-        <div id="fragment-3" class="ui-tabs-panel" style="">
-            <img src="images/slider_pic3.jpg" alt="" title="" border="0" />
-            <div class="info" >
-            <p>Annual wellness exams evaluate your pets overall health, detect problems before they get serious, and keep them on track to live a long, healthy life.</p>
-            </div>
-        </div>
-
-        <div id="fragment-4" class="ui-tabs-panel" style="">
-            <img src="images/slider_pic4.jpg" alt="" title="" border="0" />
-            <div class="info" >
-            <p>We perform soft tissue surgery for a number of medical reasons. This common surgery can be used for most anything non-joint or bone related.</p>
-            </div>
-        </div>
-
-        <div id="fragment-5" class="ui-tabs-panel" style="">
-            <img src="images/slider_pic5.jpg" alt="" title="" border="0" />
-            <div class="info" >
-            <p>Regular grooming is essential to the maintenance of your pet's health. Keep your pet smelling and looking attractive, prevent parasites,
-							and skin irritations.</p>
-            </div>
-        </div>
-
-		  <ul class="ui-tabs-nav">
-	        <li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-1"><a href="#fragment-1">Diet & Nutrition</a></li>
-            <li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-2"><a href="#fragment-2">Dentistry</a></li>
-            <li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-3"><a href="#fragment-3">Wellness & Preventive Care</a></li>
-            <li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-4"><a href="#fragment-4">Surgery Services</a></li>
-            <li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-5"><a href="#fragment-5">Grooming Services</a></li>
-	      </ul>
-
-	   </div>
-
-	</div>
-
-</div>  <!--end of slider -->
-
-		<div class="center_content">
-        	<div class="leftbox">
-              <h2>Who We Are</h2>
-              <img src="images/ken.jfif" width="290" height="134" alt="" title="" border="0" />
-              <p>
-								Our founders Will and Ken started PetVet over twenty years ago. Their goal was very simple: Provide the highest standard of caring, ethical and professional preventive veterinary care and make it accessible to all pet owners.
-
-								By working with pet retailers who shared their vision of providing widely-accessible veterinary care, Will and Ken created our ever growing network of PetVet clinics.
-              </p>
-              <a href="#" class="more">learn more</a>
-        	</div>
-
-        	<div class="leftbox">
-              <h2>Accessible Care</h2>
-              <img src="images/pic2.jpg" alt="" title="" border="0" />
-              <p>
-								Will and Ken collaborated with a team of veterinarians to produce a business model that could cater to the needs of a large number of pets in communities across the country. Thousands of pets go without essential preventative veterinary care throughout their lives, and are constantly at risk for some of the most basic and easily preventable diseases.
-
-								PetVet clinics are now available in 31 states.
-              </p>
-              <a href="#" class="more">learn more</a>
-        	</div>
-
-        	<div class="leftbox_right">
-              <h2>Promise to Pet Lovers</h2>
-              <img src="images/promise.webp" width="290" height="134" alt="" title="" border="0" />
-
-								<p><img src="https://petvet.vippetcare.com/wp-content/uploads/2016/04/highquality_red_icon.png" alt="High Quality Care Red Icon" class="alignnone size-medium wp-image-3206" width="20" height="20"> <span style="font-size: 1.5em; margin-bottom: 42px; color: #666666;">High Quality Care</span></p>
-								<p><img src="https://petvet.vippetcare.com/wp-content/uploads/2016/04/records_red_icon.png" alt="Pet Records Red Icon" class="alignnone size-full wp-image-3207" width="20" height="20"> <span style="font-size: 1.5em; margin-bottom: 42px; color: #666666;">Pet Records</span></p>
-								<p><img src="https://petvet.vippetcare.com/wp-content/uploads/2016/04/experience_red_icon.png" alt="Experience Red Icon" class="alignnone size-full wp-image-3208" width="20" height="20"> <span style="font-size: 1.5em; margin-bottom: 42px; color: #666666;">Experience</span></p>
-								<p><img src="https://petvet.vippetcare.com/wp-content/uploads/2016/04/licensedvet_red_icon.png" alt="Licensed Vet Red Icon" class="alignnone size-full wp-image-3209" width="20" height="20"> <span style="font-size: 1.5em; margin-bottom: 42px; color: #666666;">Licensed Veterinarians</span></p>
-
-              <a href="#" class="more">learn more</a>
-        	</div>
-
-        </div>
-
-
-		<div class="center_content">
-
-        	<div class="leftbox">
-              <h2>From the Blog</h2>
-				<div class="news_box">
-                	<div class="date">12.05.2019</div>
-                    <h3><a href="#">Lore ipsum doloer ametis</a></h3>
-                    <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
-                </div>
-
-        	</div>
-
-
-
-					<div class="leftbox">
-              <h2>Testimonials</h2>
-              <div class="testimonial style-1" style="overflow-y: auto; overflow-x: hidden; max-height: 300px; ">
-                    <div class="testimonial_quotes">
-											<% Review.all.each do |r| %>
-											<div class="date"><%= r.date %></div>
-					                    <p id="p_prof">From: <%= User.find(r.user_id).user_details.full_name.split(' ').first.capitalize %> <br> Rating: <span><img id="star_<%= r.rating %>" src="/img/transp.png" width="1" height="1" style="float: right;"></span></p>
-					                    <p><%= r.title %></p>
-					                    <p><%= r.content %></p>
-					            <%end%>
-                    	</div>
-              			</div>
-        	</div>
-
-
-
-        	<div class="leftbox_right">
-
-						<h2>Get in touch</h2>
-
-						<h4>PetVet</h4>
-						1611 S. Grand Blvd.<br />
-						St. Louis, Missouri, 63104<br />
-						<strong>Phone:</strong><a href="(314) 786-2710"> (314) 786-2710 </a> <br />
-						<strong>Email:</strong> <a href="mailto:info@petvet.com">info@petvet.com</a>
-						<br />
-						<br />
-						<div class="clear h20"></div>
-						<div class="img_nom img_border"><span></span>
-							 <iframe width="270" height="120" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3117.3174649798543!2d-90.24175358465783!3d38.6185771796147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87d8b48c334d2763%3A0xc287327888170015!2s1611%20S%20Grand%20Blvd%2C%20St.%20Louis%2C%20MO%2063104!5e0!3m2!1sen!2sus!4v1584860474331!5m2!1sen!2sus" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-						<small><a href="http://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=new+york+central+park&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=60.158465,135.263672&amp;vpsrc=6&amp;ie=UTF8&amp;hq=&amp;hnear=Central+Park,+New+York&amp;t=m&amp;ll=40.769606,-73.973372&amp;spn=0.014284,0.033023&amp;z=14" style="color:#0000FF; text-align:left">View Larger Map</a></small>
-
-
-
-        	</div>
-
-        </div>
-
-
-        <div class="clear"></div>
-
-<div class="footer">
-    <div class="copyrights">
-    Copyright © 2020 PetVet | Designed & developed by AtlasGeek7
-    </div>
-    <div class="footer_right">
-    <a href="#">Home</a>
-    <a href="#">About Us</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Contact Us</a>
-    </div>
-    <div class="clear"></div>
-</div>
-
-</div> <!--end of main container-->
-
-
-
-</body>
-</html>
+</nav>

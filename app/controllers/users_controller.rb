@@ -1,180 +1,58 @@
 class UsersController < ApplicationController
+  get '/users/:slug' do
+    @user = User.find_by_slug(params[:slug])
+    erb :'users/show'
+  end
 
-    get "/user_logout" do
+  get '/signup' do
+    if !logged_in?
+      erb :'users/sign_up', locals: {message: "Please sign up before you sign in"}
+    else
+      redirect to '/'
+    end
+  end
 
-      if session[:email]
-        user_logout!
-      else
-        redirect "/users/home"
+  post '/signup' do
+    if params[:username] == "" || params[:email] == "" || params[:password] == ""
+      redirect to '/signup'
+    else
+      if !(User.exists?(username: params[:username])) && !(User.exists?(email: params[:email]))
+        @user = User.new(:username => params[:username], :email => params[:email], :password => params[:password])
+        @user.save
+        session[:user_id] = @user.id
+        redirect to '/'
+      elsif User.exists?(username: params[:username])
+        erb :'users/sign_up', locals: {message: "Username already in use!"}
+      elsif User.exists?(email: params[:email])
+        erb :'users/sign_up', locals: {message: "Email already in use!"}
       end
-
     end
+  end
 
-    get "/users/home" do
-      erb :"/users/home"
+  get '/login' do
+    if !logged_in?
+      erb :'users/login'
+    else
+      redirect to '/'
     end
+  end
 
-    get "/users/employees_status" do
-
-      if session[:email]
-        @current_user = User.find_by(email: session[:email])
-        if @current_user
-          if @current_user.cid == 0
-            erb :"/users/employees_status"
-          end
-        end
-      else
-        redirect "/users/home"
-      end
-
+  post '/login' do
+    user = User.find_by(:username => params[:username])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect to "/"
+    else
+      redirect to '/signup'
     end
+  end
 
-    get "/users/chat_history" do
-
-      if session[:email]
-        @current_user = User.find_by(email: session[:email])
-        if @current_user
-          ecid = @current_user.cid
-        else
-          ecid = 0
-        end
-        if (ecid != 0)
-          @chat_employee = Employee.find_by(id: ecid)
-          @messages = @chat_employee.messages.split('~')
-        else
-          @messages = ["Welcome to Live Chat!"]
-        end
-        erb :"/users/chat_history"
-      else
-        redirect "/users/home"
-      end
-
+  get '/logout' do
+    if logged_in?
+      session.destroy
+      redirect to '/login'
+    else
+      redirect to '/'
     end
-
-    post "/users/chat_init" do
-
-      if session[:email]
-        @current_user = User.find_by(email: session[:email])
-        @chat_employee = Employee.find_by(id: params[:ecid])
-        @chat_employee.cid = @current_user.id
-        @chat_employee.messages = "[ #{Time.now.strftime("%b-%m-%d %H:%M:%S")} (CT) ] ChatBot: <br />#{@current_user.user_details.full_name.split(' ').first.capitalize} & #{@chat_employee.name.split(' ').first.capitalize} #{@chat_employee.name.split(' ').last[0].capitalize}. entered the chatroom.!~ Welcome to Live Chat!~"
-        @chat_employee.save
-        @current_user.cid = params[:ecid]
-        @current_user.save
-      else
-        redirect "/users/home"
-      end
-
-    end
-
-    post "/users/chat_history" do
-
-      if session[:email]
-        @current_user = User.find_by(email: session[:email])
-        ecid = @current_user.cid
-        if (ecid != 0)
-          @chat_employee = Employee.find_by(id: ecid)
-          @messages = @chat_employee.messages.split('~')
-          msg = params[:message]
-          @messages.unshift("[ #{Time.now.strftime("%b-%m-%d %H:%M:%S")} (CT) ] #{@current_user.user_details.full_name.split(' ').first.capitalize}: <br /> #{msg}.~")
-           @chat_employee.messages = @messages.join('~')
-           @chat_employee.save
-          @messages =  @chat_employee.messages.split('~')
-        else
-          @messages = ["[ #{Time.now.strftime("%b-%m-%d %H:%M:%S")} (CT) ] ChatBot: <br />Please choose an available PetVet chatter!~", "Welcome to Live Chat!~"]
-        end
-        erb :"/users/chat_history"
-      else
-        redirect "/users/home"
-      end
-
-    end
-
-    post "/users/home" do
-
-        users = User.all.map { |u| u.email}
-        if users.include?(params[:email]) && params[:cmd] == "signup"
-          erb :"/users/home", locals: {error: "&bull; E-mail already in use!"}
-        elsif !(users.include?(params[:email])) && params[:cmd] == "signup"
-            @user = User.new(email: params[:email], password: params[:password])
-            @user.cid = 0
-            @user.save
-            redirect "/users/home"
-        elsif users.include?(params[:email]) && params[:cmd] == "login"
-          login(params[:email], params[:password])
-          @current_user = User.find_by(email: session[:email])
-          redirect "/users/#{@current_user.id}/home"
-        elsif !(users.include?(params[:email])) && params[:cmd] == "login"
-          erb :"/users/home", locals: {error: "&bull; Wrong credentials!"}
-        end
-
-    end
-
-    get "/users/:id/home" do
-
-      if session[:email]
-        if (logged_in?)
-          @current_user = User.find_by(email: session[:email])
-          @appointment_ids = Appointment.all.pluck(:user_id)
-          @pets = @current_user.pets.all
-          if @appointment_ids.include?(@current_user.id)
-              @appointment = Appointment.find_by(user_id: @current_user.id)
-              @doctor = Employee.find_by(id: @appointment.employee_id)
-          end
-          @review = Review.all.find_by(user_id: @current_user.id)
-          @employees = Employee.all
-          erb :"/users/home"
-        end
-      else
-        redirect "/users/home"
-      end
-
-    end
-
-    post "/users/:id/form" do
-
-      if session[:email]
-          @current_user = User.find_by(email: session[:email])
-          @detail = UserDetails.new
-          @detail.full_name = params[:full_name]
-          @detail.dob = params[:dob]
-          @detail.gender = params[:gender].capitalize
-          @detail.address = params[:address]
-          @detail.phone_number = params[:phone_number]
-          @detail.user_id = @current_user.id
-          @detail.save
-          @pet = Pet.new
-          @pet.name = params[:pet_name]
-          @pet.age = params[:pet_age]
-          @pet.gender = params[:pet_gender]
-          @pet.breed = params[:breed]
-          @pet.user = @current_user
-          @pet.save
-          redirect "/users/#{@current_user.id}/home#about"
-        else
-          redirect "/users/home"
-        end
-
-    end
-
-    post '/users/:id/uploadpic' do
-
-      if session[:email]
-        if (params[:file])
-          filename = params[:file][:filename]
-          file = params[:file][:tempfile]
-          @current_user = User.find_by(email: session[:email])
-          @current_user.img = "/img/#{filename}"
-          @current_user.save
-          File.open("./././public/img/#{filename}", 'wb') do |f|
-            f.write(file.read)
-          end
-          redirect "/users/#{@current_user.id}/home#about"
-        end
-      else
-        redirect "/users/home"
-      end
-
-    end
-
+  end
 end
