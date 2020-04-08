@@ -1,4 +1,5 @@
 class PetsController < ApplicationController
+
   get '/pets' do
     if logged_in?
       @pets = current_user.pets.all
@@ -83,4 +84,5 @@ class PetsController < ApplicationController
       redirect to '/login'
     end
   end
+  
 end

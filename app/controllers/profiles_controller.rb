@@ -1,9 +1,10 @@
 class ProfilesController < ApplicationController
+
   get '/profiles' do
     if logged_in?
         @profile = current_user.profile
         if @profile && @profile.user == current_user
-          redirect to "/profiles/#{current_user.id}"
+          redirect to "/profiles/#{@profile.id}"
         else
           redirect to '/http_404'
         end
@@ -87,4 +88,5 @@ class ProfilesController < ApplicationController
       redirect to '/login'
     end
   end
+  
 end

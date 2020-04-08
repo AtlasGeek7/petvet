@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       if !(User.exists?(username: params[:username])) && !(User.exists?(email: params[:email]))
         @user = User.new(:username => params[:username], :email => params[:email], :password => params[:password])
         @user.save
-        session[:user_id] = @user.id
+        session[:email] = @user.email
         redirect to '/'
       elsif User.exists?(username: params[:username])
         erb :'users/sign_up', locals: {message: "Username already in use!"}
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
   post '/login' do
     user = User.find_by(:username => params[:username])
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+      session[:email] = user.email
       redirect to "/"
     else
       redirect to '/signup'
@@ -60,5 +60,5 @@ class UsersController < ApplicationController
       redirect to '/'
     end
   end
-  
+
 end
