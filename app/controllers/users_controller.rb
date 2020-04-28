@@ -1,64 +1,35 @@
 class UsersController < ApplicationController
-
-  get '/users' do
-    if logged_in?
-      @user = User.find(current_user.id)
-      erb :'/users/show'
-    else
-      redirect to '/'
-    end
+  def home
+    @pets = current_user.pets.all if current_user
   end
 
-  get '/signup' do
-    if !logged_in?
-      erb :'users/sign_up', locals: {message: "Please sign up before you sign in"}
-    else
-      redirect to '/'
-    end
+  def index
+    redirect_to "/users/home"
   end
 
-  post '/signup' do
-    if params[:username] == "" || params[:email] == "" || params[:password] == ""
-      redirect to '/signup'
-    else
-      if !(User.exists?(username: params[:username])) && !(User.exists?(email: params[:email]))
-        @user = User.new(:username => params[:username], :email => params[:email], :password => params[:password])
-        @user.save
-        session[:email] = @user.email
-        redirect to '/'
-      elsif User.exists?(username: params[:username])
-        erb :'users/sign_up', locals: {message: "Username already in use!"}
-      elsif User.exists?(email: params[:email])
-        erb :'users/sign_up', locals: {message: "Email already in use!"}
+  def new
+    @user = User.new
+  end
+
+  def show
+    @user = current_user
+    render :show_user
+  end
+
+  def create
+    @user = User.create(user_params)
+      if @user.errors.any?
+        render :new
+      else
+          session[:email] = @user.email
+          redirect_to :root
       end
-    end
   end
 
-  get '/login' do
-    if !logged_in?
-      erb :'users/login'
-    else
-      redirect to '/'
-    end
-  end
+  private
 
-  post '/login' do
-    user = User.find_by(:username => params[:username])
-    if user && user.authenticate(params[:password])
-      session[:email] = user.email
-      redirect to "/"
-    else
-      redirect to '/signup'
-    end
-  end
-
-  get '/logout' do
-    if logged_in?
-      session.destroy
-      redirect to '/login'
-    else
-      redirect to '/'
-    end
+  def user_params
+      params.require(:user).permit(:username, :email, :password)
   end
 
 end

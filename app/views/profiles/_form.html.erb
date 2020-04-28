@@ -1,0 +1,41 @@
+<%= form_for @profile do |f| %>
+<p>
+  <%= f.label :full_name %>
+<br />
+  <%= f.text_field :full_name %>
+</p>
+<p>
+  <%= f.label :age%>
+<br />
+  <%= f.text_field :age %>
+</p>
+<p>
+  <%= f.label :gender %>
+<br />
+  <%= f.text_field :gender%>
+</p>
+<p>
+  <%= f.label :address %>
+<br />
+  <%= f.text_field :address%>
+</p>
+<p>
+  <%= f.hidden_field  "user_id", value: current_user.id %>
+  <%= f.submit "Submit" %>
+</p>
+<% end %>
+
+<% if @profile.errors.any? %>
+  <div id="error_explanation">
+    <h2>
+      <%= pluralize(@profile.errors.count, "error") %>
+      prohibited this profile from being saved:
+    </h2>
+
+    <ul>
+    <% @profile.errors.full_messages.each do |msg| %>
+      <p style="color: red;"> &bull; <%= msg %></p>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

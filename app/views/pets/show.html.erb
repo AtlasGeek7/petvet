@@ -1,0 +1,25 @@
+<div>
+  <p>Name: <%= @pet.name %></p>
+  <p>Age: <%= @pet.age %></p>
+  <p>Gender: <%= @pet.gender %></p>
+  <p>Breed: <%= @pet.breed %></p>
+
+
+  <%= form_tag pet_path(@pet), method: "delete" do %>
+  <%= submit_tag "Delete Pet" %>
+  <% end %>
+
+
+    <%= link_to 'Edit Pet', edit_pet_path(@pet)  %>
+</div>
+
+<div>
+  <p>
+  <%= link_to "View Pet's Medicines", pet_medicines_path(@pet)  %>
+  </p>
+
+<%= render "pet_index" %>
+
+<%= render "/users/home_link" %>
+
+</div>

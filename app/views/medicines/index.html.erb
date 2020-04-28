@@ -1,0 +1,25 @@
+<% if current_user %>
+<h1> <%= @medicines.all.first.pet.name %>'s Medicines: </h1>
+<hr />
+<% @medicines.each do |m| %>
+<p>Rx: <span><%= m.rx_name %></span> </p>
+<p>	Prescription dosage: <span><%= m.pill_count %></span> x <span><%= m.pill_size %> mg </span></p>
+<p> Prescribed by: Dr. <%= m.employee.name %>. </p>
+<p> Prescription date: <%= m.created_at %>. </p>
+<hr />
+<% end %>
+<% end %>
+
+<% if current_employee %>
+
+<h1> Your Prescriptions: </h1>
+<hr />
+<% @medicines.each do |m| %>
+<p> Prescribed for: <%= m.pet.name %>. </p>
+<p>Rx: <span><%= m.rx_name %></span> </p>
+<p>	Prescription dosage: <span><%= m.pill_count %></span> x <span><%= m.pill_size %> mg </span></p>
+<p> Prescription date: <%= m.created_at %>. </p>
+<hr />
+<% end %>
+<%= render "/employees/home_link" %>
+<% end %>

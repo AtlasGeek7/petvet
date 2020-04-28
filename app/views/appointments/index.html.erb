@@ -1,0 +1,44 @@
+
+
+<% if @current_user %>
+<p> Welcome, <%=@current_user.username %>!
+<h2> Your Appointments: </h2>
+
+<h3>Pending</h3>
+  <% @current_user.appointments.unconfirmed.all.each do |a| %>
+<p><%= link_to a.apt_date, appointment_path(a) %> </p>
+  <% end %>
+  <hr />
+
+<h3>Confirmed</h3>
+<% @current_user.appointments.confirmed_and_ordered.all.each do |a| %>
+<p><%= link_to a.apt_date, appointment_path(a) %> </p>
+<% end %>
+  <hr />
+<div>
+  <a href="/appointments/new"> Add Appointment </a>
+</div>
+
+<%= render "/users/home_link" %>
+<% end %>
+
+
+<% if @current_employee %>
+<p> Welcome, <%= @current_employee.name %>!
+<h2> Your Appointments: </h2>
+
+<h3>Pending</h3>
+  <% @current_employee.appointments.unconfirmed.all.each do |a| %>
+<p><%= link_to a.apt_date, appointment_path(a) %> </p>
+  <% end %>
+  <hr />
+
+<p>
+  <h3>Confirmed</h3>
+    <% @current_employee.appointments.confirmed_and_ordered.all.each do |a| %>
+  <p><%= link_to a.apt_date, appointment_path(a) %> </p>
+    <% end %>
+    <hr />
+
+<%= render "/employees/home_link" %>
+<% end %>

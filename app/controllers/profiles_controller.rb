@@ -1,92 +1,58 @@
 class ProfilesController < ApplicationController
+  before_action :require_login
+  before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :restrict_access, only: [:show, :edit]
 
-  get '/profiles' do
-    if logged_in?
-        @profile = current_user.profile
-        if @profile && @profile.user == current_user
-          redirect to "/profiles/#{@profile.id}"
-        else
-          redirect to '/http_404'
-        end
+  def new
+    @profile = Profile.new
+  end
+
+  def show
+  end
+
+  def create
+    @profile = Profile.create(profile_params)
+    if @profile.valid?
+      @profile.save
+      redirect_to users_home_path
     else
-      redirect to '/login'
+      render :new
     end
   end
 
-  get '/profiles/new' do
-    if logged_in?
-      erb :'profiles/create_profile'
+  def edit
+  end
+
+  def update
+    @profile.update(profile_params)
+    if @profile.valid?
+      redirect_to profile_path
     else
-      redirect to '/login'
+      render :new
     end
   end
 
-  post '/profiles' do
-    if logged_in?
-        @profile = current_user.create_profile(full_name: params[:full_name], age: params[:age], gender: params[:gender], address: params[:address])
-        if @profile.save
-          redirect to "/profiles/#{@profile.id}"
-        else
-          redirect to "/profiles/new"
-        end
-    else
-      redirect to '/login'
-    end
+  def destroy
+      @profile.destroy
+      redirect_to users_home_path
   end
 
-  get '/profiles/:id' do
-    if logged_in?
-      @profile = Profile.find_by_id(params[:id])
-      if @profile && @profile.user == current_user
-        erb :'profiles/info'
-      else
-        redirect to '/http_404'
-      end
-    else
-      redirect to '/login'
-    end
+  private
+  # requiring a valid session before exposing any resources.
+  def require_login
+    return head(:forbidden) unless current_user
+  end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_profile
+    @profile = Profile.find_by_id(params[:id])
+  end
+  # Adding access restrictions on resourses for non current users.
+  def restrict_access
+    render :"/home/http_404" unless @profile && @profile.user ==  current_user
+  end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def profile_params
+      params.require(:profile).permit(:age, :address, :gender, :full_name, :user_id)
   end
 
-  get '/profiles/:id/edit' do
-    if logged_in?
-      @profile = Profile.find_by_id(params[:id])
-      if @profile && @profile.user == current_user
-        erb :'profiles/edit_profile'
-      else
-        redirect to '/http_404'
-      end
-    else
-      redirect to '/login'
-    end
-  end
-
-  patch '/profiles/:id' do
-    if logged_in?
-        @profile = Profile.find_by_id(params[:id])
-        if @profile && @profile.user == current_user
-          if @profile.update(full_name: params[:full_name], age: params[:age], gender: params[:gender], address: params[:address])
-            redirect to "/profiles/#{@profile.id}"
-          else
-            redirect to "/profiles/#{@profile.id}/edit"
-          end
-        else
-          redirect to '/'
-        end
-    else
-      redirect to '/login'
-    end
-  end
-
-  delete '/profiles/:id/delete' do
-    if logged_in?
-      @profile = Profile.find_by_id(params[:id])
-      if @profile && @profile.user == current_user
-        @profile.delete
-      end
-      redirect to '/'
-    else
-      redirect to '/login'
-    end
-  end
-  
 end

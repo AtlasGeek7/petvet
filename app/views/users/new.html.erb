@@ -1,0 +1,37 @@
+<h2>PetVet</h2>
+
+
+
+
+<h3>Sign Up</h3>
+
+<%= form_for @user, controller: 'users', action: 'create' do |f| %>
+  <%= f.label :username %>
+  <%= f.text_field :username %>
+  <br />
+  <%= f.label :email %>
+  <%= f.text_field :email %>
+  <br />
+  <%= f.label :password %>
+  <%= f.password_field :password %>
+  <p>
+    <%= f.submit "Register" %>
+  </p>
+<% end %>
+
+<p><a href="/login"> Login? </a></p>
+
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2>
+      <%= pluralize(@user.errors.count, "error") %>
+      prohibited this user from being saved:
+    </h2>
+
+
+    <% @user.errors.full_messages.each do |msg| %>
+      <p style="color: red;"> &bull; <%= msg %></p>
+    <% end %>
+
+  </div>
+<% end %>

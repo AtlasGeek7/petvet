@@ -1,0 +1,14 @@
+
+<p> Welcome, <%=current_user.username %>!
+<h2> Your Pets: </h2>
+
+
+  <% @pets.each do |pet| %>
+<p><%= link_to pet.name, pet_path(pet) %> </p>
+  <% end %>
+  <hr />
+<div>
+  <a href="/pets/new"> Add Pet </a>
+</div>
+
+<%= render "/users/home_link" %>

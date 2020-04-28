@@ -1,0 +1,35 @@
+<%= stylesheet_link_tag 'application' %>
+
+<%= form_with(url: "/sessions", method: "post") do |f| %>
+
+    <%= f.label :email, "E-mail" %>
+    <%= f.email_field :email, placeholder: "Enter your e-mail" %>
+
+    <%= f.label :password, "Password" %>
+    <%= f.password_field :password, placeholder: "Enter your password" %>
+    <%= f.hidden_field  "user_type", value: @user_type %>
+    <%= f.submit "Login", id: "button"%>
+
+<% if @user_type == "client" %>
+  <p>
+    <%= link_to('facebook login', '/auth/facebook', id: "fb-login") %>
+    <p style="color: black;">user@test.com</p>
+    <p style="color: black;">coolio@test.com</p>
+  </p>
+  <% else %>
+  <p style="color: black;">joe@petvet.com</p>
+  <p style="color: black;">moe@petvet.com</p>
+  <p style="color: black;">$2a$12$1j4EzzidnQ1A.JyHym8.b.7g1vLARoJpupDOQL3LXtwFpKq7GXdIS</p>
+  <% end %>
+
+  <p>
+    <%= link_to "Sign up?", new_user_path%>
+  </p>
+
+
+<% end %>
+
+
+    <% flash.each do |msg| %>
+      <p style="color: red;"> &bull;  <%= msg[1] %> </p>
+    <% end %>

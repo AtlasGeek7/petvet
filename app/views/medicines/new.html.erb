@@ -1,0 +1,34 @@
+<%= form_for @medicine do |f| %>
+<p>
+  <%= f.label "Prescribing for:"%>
+<br />
+  <%= f.select :pet_id, options_for_select(@pets.collect {|p| [ p.name, p.id ] }) %>
+</p>
+<p>
+  <%= f.label "Rx name:" %>
+<br />
+  <%= f.text_field :rx_name %>
+</p>
+<p>
+  <%= f.label "Pill count:" %>
+<br />
+  <%= f.text_field :pill_count %>
+</p>
+<p>
+  <%= f.label "Pill size (mg):" %>
+<br />
+  <%= f.text_field :pill_size %>
+</p>
+<p>
+  <%= f.hidden_field :employee_id %>
+  <%= f.submit "Submit" %>
+</p>
+<% end %>
+
+<%= render "/employees/home_link" %>
+
+<% if flash[:error] %>
+  <% flash[:error].each do |msg| %>
+    <p style="color: red;"> &bull;  <%= msg %> </p>
+  <% end %>
+<% end %>

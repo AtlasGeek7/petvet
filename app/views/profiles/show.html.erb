@@ -1,0 +1,25 @@
+<p> Welcome, <%=current_user.username %>!
+<h2> Profile </h2>
+
+<p>Full-name: <%= @profile.full_name %></p>
+<p>Age: <%= @profile.age %></p>
+<p>Gender: <%= @profile.gender %></p>
+<p>Address: <%= @profile.address %></p>
+
+
+
+<%= form_tag profile_path(@profile.id), method: "delete" do %>
+
+  <%= submit_tag "Delete Profile" %>
+<% end %>
+
+<br />
+<p>
+  <%= link_to 'Edit Profile', edit_profile_path(@profile)  %>
+</p>
+
+<%= render "/users/home_link" %>
+
+
+<br />
+<p>Logged in as: <%=current_user.username %></p>

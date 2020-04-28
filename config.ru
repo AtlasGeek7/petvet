@@ -1,11 +1,5 @@
-require './config/environment'
+# This file is used by Rack-based servers to start the application.
 
-if ActiveRecord::Base.connection.migration_context.needs_migration?
-  raise 'Migrations are pending. Run `rake db:migrate` to resolve the issue.'
-end
+require_relative 'config/environment'
 
-use Rack::MethodOverride
-use UsersController
-use PetsController
-use ProfilesController
-run ApplicationController
+run Rails.application

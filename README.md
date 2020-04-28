@@ -1,7 +1,24 @@
-This is a Sinatra App for an imaginary veterinary clinic called PetVet. It's an MVC that allows users to use a client portal. CRUD tasks can be performed to:
+# README
 
-+ Sign up and sign in
-+ Create a client/pet profile
-+ Edit pet info
-+ Add/delete pets
-+ Display all the data
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...

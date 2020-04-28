@@ -1,0 +1,11 @@
+<h1> Prescription Summary: </h1>
+
+
+
+<p>Rx: <span><%= @medicine.rx_name %></span> </p>
+<p>	Prescription dosage: <span><%= @medicine.pill_count %></span> x <span><%= @medicine.pill_size %> mg </span></p>
+<p>	Prescribed for: <%= Pet.find_by(id: @medicine.pet_id).name %>. </p>
+<p class="by_doctor"> Prescribed by: Dr. <%= Employee.find_by(id: @medicine.employee_id).name %> . </p>
+<hr />
+
+<%= render "/employees/home_link" %>

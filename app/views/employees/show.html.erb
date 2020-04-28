@@ -1,0 +1,23 @@
+<h2>Welcome to PetVet!</h2>
+
+
+<nav>
+  <% if employee_logged_in? %>
+<p>
+  <a href="/appointments/"> View All Appointments </a>
+</p>
+<p>
+<%= link_to "Prescriptions", employee_medicines_path(@employee)  %>
+<p><%= link_to "New Prescription", new_employee_medicine_path(@employee) %></p>
+
+<p>
+    <a href="/logout"> Log Out </a>
+</p>
+    <br />
+    <p>Logged in as: <%=@employee.username %></p>
+
+  <% else %>
+  <p>Please login: <a href="/login?user_type=employee"> Login </</p>
+  <%end %>
+
+</nav>
