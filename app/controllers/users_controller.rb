@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    redirect_to "/users/home"
+    redirect_to users_home_path
   end
 
   def new
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
         render :new
       else
           session[:email] = @user.email
-          redirect_to :root
+          redirect_to users_home_path
       end
   end
 

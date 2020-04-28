@@ -14,9 +14,11 @@
 </div>
 
 <div>
+  <% if @pet.medicines.exists? %>
   <p>
   <%= link_to "View Pet's Medicines", pet_medicines_path(@pet)  %>
   </p>
+  <% end %>
 
 <%= render "pet_index" %>
 
