@@ -2,20 +2,17 @@ class AppointmentsController < ApplicationController
 
     before_action :set_pets, only: [:new, :create]
     before_action :set_employees, only: [:new, :create]
+    before_action :set_dates, only: [:new, :create]
+    before_action :set_users, only: [:index, :show, :new]
 
   def index
-    @current_user = current_user
-    @current_employee = current_employee
   end
+
   def new
-    @current_user = current_user
     @appointment = Appointment.new
-    @dates = read_dates
   end
 
   def show
-    @current_user = current_user
-    @current_employee = current_employee
     @appointment = Appointment.find_by_id(params[:id])
   end
 
@@ -47,30 +44,39 @@ class AppointmentsController < ApplicationController
 
   private
 
-  def set_pets
-    @pets = current_user.pets.all
-  end
+    def set_users
+      @current_user = current_user
+      @current_employee = current_employee
+    end
 
-  def set_employees
-    @employees = Employee.all
-  end
+    def set_pets
+      @pets = current_user.pets.all
+    end
 
-  def appointment_params
-      params.require(:appointment).permit(:symptoms, :reason, :status, :apt_date, :full_name, :user_id, :employee_id, :pet_name)
-  end
+    def set_employees
+      @employees = Employee.all
+    end
 
-  def read_dates
-    date_arr = []
-    File.foreach("././public/dates.txt") { |line| date_arr << line }
-    return date_arr
-  end
+    def set_dates
+      @dates = read_dates
+    end
 
-  def write_dates(data)
-    File.open("././public/dates.txt", "w") { |f|
-      data.each { |d|
-        f.write "#{d}"
+    def appointment_params
+        params.require(:appointment).permit(:symptoms, :reason, :status, :apt_date, :full_name, :user_id, :employee_id, :pet_name)
+    end
+
+    def read_dates
+      date_arr = []
+      File.foreach("././public/dates.txt") { |line| date_arr << line }
+      return date_arr
+    end
+
+    def write_dates(data)
+      File.open("././public/dates.txt", "w") { |f|
+        data.each { |d|
+          f.write "#{d}"
+        }
       }
-    }
-  end
+    end
 
 end

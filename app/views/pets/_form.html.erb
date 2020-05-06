@@ -25,17 +25,4 @@
   </p>
 <% end %>
 
-<% if @pet.errors.any? %>
-  <div id="error_explanation">
-    <h2>
-      <%= pluralize(@pet.errors.count, "error") %>
-      prohibited this pet from being saved:
-    </h2>
-
-    <ul>
-    <% @pet.errors.full_messages.each do |msg| %>
-      <p style="color: red;"> &bull; <%= msg %></p>
-    <% end %>
-    </ul>
-  </div>
-<% end %>
+<%= render '/form_validation/errors', object: @pet %>

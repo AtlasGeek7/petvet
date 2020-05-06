@@ -25,10 +25,10 @@
 </p>
 <% end %>
 
-<%= render "/employees/home_link" %>
-
 <% if flash[:error] %>
   <% flash[:error].each do |msg| %>
     <p style="color: red;"> &bull;  <%= msg %> </p>
   <% end %>
 <% end %>
+
+<%= render "/employees/home_link" %>

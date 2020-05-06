@@ -37,20 +37,7 @@
 </p>
 <% end %>
 
-<% if @appointment.errors.any? %>
-  <div id="error_explanation">
-    <h2>
-      <%= pluralize(@appointment.errors.count, "error") %>
-      prohibited this appointment from being saved:
-    </h2>
-
-    <ul>
-    <% @appointment.errors.full_messages.each do |msg| %>
-      <p style="color: red;"> &bull; <%= msg %></p>
-    <% end %>
-    </ul>
-  </div>
-<% end %>
+<%= render '/form_validation/errors', object: @appointment %>
 
 
 <div>

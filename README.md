@@ -4,4 +4,7 @@ This is a Rails App for an imaginary veterinary clinic called PetVet. It's an MV
 + Create a client/pet profile
 + Edit client/pet info
 + Add/delete pets
++ Book appointments
++ confirm/delete appointments
++ Prescribe medicines
 + Display all the data
