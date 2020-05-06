@@ -1,5 +1,13 @@
 
 <p> Welcome, <%=current_user.username %>!
+  <br />
+  <h2> Search Bar </h2>
+  <div>
+  <form method="get" action="/pets/index">
+  <input type="text" name="search_query" placeholder="Enter your pet's name...">
+  <input type="submit" value="Search">
+  </form>
+  </div>
 <h2> Your Pets: </h2>
 
 
@@ -10,5 +18,7 @@
 <div>
   <a href="/pets/new"> Add Pet </a>
 </div>
+
+
 
 <%= render "/users/home_link" %>

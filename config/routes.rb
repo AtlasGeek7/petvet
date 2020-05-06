@@ -1,11 +1,5 @@
 Rails.application.routes.draw do
-#  resources :reviews
-#  resources :medicines
-#  resources :appointments
-#  resources :employees
-#  resources :profiles
-#  resources :pets
-#  resources :users, only: [:new, :create, :edit, :update]
+
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 

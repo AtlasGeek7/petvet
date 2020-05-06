@@ -1,5 +1,5 @@
 class PetsController < ApplicationController
-  
+
   before_action :require_login
   before_action :set_pet, only: [:show, :edit, :update, :destroy]
   before_action :restrict_access, only: [:show, :edit]
@@ -9,6 +9,9 @@ class PetsController < ApplicationController
       @pets = Pet.all
     end
     @pets = current_user.pets.all
+    ### live code ###
+    find_pet if params[:search_query]
+    #################
   end
 
   def new
@@ -46,13 +49,17 @@ class PetsController < ApplicationController
   end
 
   private
+    # implementing search bar functionality
+    def find_pet
+      redirect_to pet_path(@pet) if @pet
+    end
     # requiring a valid session before exposing any resources.
     def require_login
       return head(:forbidden) unless current_user
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_pet
-      @pet = Pet.find_by_id(params[:id])
+      @pet = Pet.find_by_id(params[:id]) || Pet.find_by(name: params[:search_query], user_id: current_user.id)
     end
     # Adding access restrictions on resourses for non current users.
     def restrict_access
